@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Link, IndexLink } from 'react-router';
-import '../styles/css/bootstrap.min.css';
+import '../styles/css/bootstrap.css';
 import '../styles/styles.scss'; // Yep, that's right. You can import SASS/CSS files too! Webpack will run the associated loader and plug this into the page.
 
 // This is a class-based component because the current

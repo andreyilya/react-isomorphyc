@@ -13,7 +13,6 @@ class FuelSavingsForm extends React.Component {
     this.onTimeframeChange = this.onTimeframeChange.bind(this);
     this.fuelSavingsKeypress = this.fuelSavingsKeypress.bind(this);
     this.resetForm = this.resetForm.bind(this);
-    this.valid = [];
   }
 
   onTimeframeChange(e) {
@@ -22,8 +21,6 @@ class FuelSavingsForm extends React.Component {
 
 
   fuelSavingsKeypress(name, value, valid) {
-    //TODO: add to form component
-    this.valid[name] = valid;
     this.props.calculateFuelSavings(this.props.fuelSavings, name, value);
   }
 
@@ -32,14 +29,14 @@ class FuelSavingsForm extends React.Component {
     e.preventDefault();
   }
 
-  resetForm() {
-   // _.assign(this.props.fuelSavings, this.baseState);
-   // this.forceUpdate();
+  resetForm(e) {
+    this.props.resetForm();
+    e.preventDefault();
   }
 
   render() {
     const {fuelSavings} = this.props;
-
+    let dirty = false;//TODO: change
     return (
       <div>
         <h2>Fuel Savings Analysis</h2>
@@ -52,7 +49,7 @@ class FuelSavingsForm extends React.Component {
             required
             minlength="3" maxlength="7"/>
           <TextInput label="Trade-in MPG" onChange={this.fuelSavingsKeypress} name="tradeMpg"
-                     value={fuelSavings.tradeMpg} required maxlength="7" changeState={}/>
+                     value={fuelSavings.tradeMpg} required maxlength="7" />
           <TextInput label="New Vehicle price per gallon" onChange={this.fuelSavingsKeypress} name="newPpg"
                      value={fuelSavings.newPpg}/>
           <TextInput label="Trade-in price per gallon" onChange={this.fuelSavingsKeypress} name="tradePpg"
@@ -74,8 +71,8 @@ class FuelSavingsForm extends React.Component {
           <label>Date Modified</label>
           {fuelSavings.dateModified}
           <ButtonToolbar>
-            <Button bsStyle="default" type="reset"  onClick={this.resetForm}>Reset</Button>
-            <Button bsStyle="primary" type="submit"  onClick={this.save}>Save</Button>
+            <Button bsStyle="default" type="reset" disabled={dirty} onClick={this.resetForm}>Reset</Button>
+            <Button bsStyle="primary" type="submit" onClick={this.save}>Save</Button>
           </ButtonToolbar>
         </form>
         <hr/>
@@ -89,8 +86,9 @@ class FuelSavingsForm extends React.Component {
 
 FuelSavingsForm.propTypes = {
   saveFuelSavings: PropTypes.func.isRequired,
+  resetForm: PropTypes.func,
   calculateFuelSavings: PropTypes.func.isRequired,
-  fuelSavings: PropTypes.object.isRequired
+  fuelSavings: PropTypes.object.isRequired,
 };
 
 export default FuelSavingsForm;

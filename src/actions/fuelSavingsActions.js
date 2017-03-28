@@ -24,3 +24,10 @@ export function calculateFuelSavings(settings, fieldName, value) {
     value
   };
 }
+export function resetForm(settings) {
+  return {
+    type: types.RESET_FORM,
+    dateModified: getFormattedDateTime(),
+    settings
+  };
+}
