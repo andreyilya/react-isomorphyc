@@ -49,7 +49,7 @@ export default class TextInput extends React.Component {
   validationErrors() {
     return _.filter(this.validationErrorMatrix(), (item) => {
       return item.val;
-    })
+    });
   }
 
   validationState(valid) {
