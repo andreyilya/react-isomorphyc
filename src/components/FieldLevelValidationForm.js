@@ -3,6 +3,8 @@ import {Field, reduxForm} from "redux-form";
 import {TextInputRedux} from "../components/TextInputRedux";
 import Button from "react-bootstrap/lib/Button";
 import ButtonToolbar from "react-bootstrap/lib/ButtonToolbar";
+import Col from "react-bootstrap/lib/Col";
+
 import "../styles/styles.scss"; // Yep, that's right. You can import SASS/CSS files too! Webpack will run the associated loader and plug this into the page.
 
 const required = value => value ? undefined : 'Required';
@@ -22,33 +24,23 @@ const aol = value =>
   value && /.+@aol\.com/.test(value) ?
     'Really? You still use AOL for your email?' : undefined;
 
-const renderField = ({input, label, type, meta: {dirty, visited, pristine, touched, error, warning}}) => (
-  <div>
-    <label>{label}</label>
-    <div>
-      <input {...input} placeholder={label} type={type}/>
-      {touched && ((error && <span>{error} 2</span>) || (warning && <span>{warning} 1</span>))}
-    </div>
-  </div>
-);
-
 const FieldLevelValidationForm = (props) => {
-  const {handleSubmit, pristine, reset, submitting} = props;
+  const {handleSubmit, pristine, reset, submitting, invalid} = props;
   return (
     <div>
       <h2>Redux validation</h2>
       <form className="form-horizontal" onSubmit={handleSubmit}>
         <Field name="username" type="text"
-               component={renderField} label="Username"
+               component={TextInputRedux} label="Username"
                validate={[required, maxLength15]}
         />
         <Field name="email" type="email"
-               component={renderField} label="Email"
+               component={TextInputRedux} label="Email"
                validate={email}
                warn={aol}
         />
         <Field name="age" type="number"
-               component={renderField} label="Age"
+               component={TextInputRedux} label="Age"
                validate={[required, number, minValue18]}
                warn={tooOld}
         />
@@ -57,10 +49,12 @@ const FieldLevelValidationForm = (props) => {
                validate={[required, number, minValue18]}
                warn={tooOld}
         />
-        <ButtonToolbar>
-          <Button bsStyle="primary" type="submit" disabled={submitting}>Save</Button>
-          <Button bsStyle="default" type="button" disabled={pristine || submitting} onClick={reset}>Reset</Button>
-        </ButtonToolbar>
+        <Col sm={8} smOffset={4}>
+          <ButtonToolbar>
+            <Button bsStyle="primary" type="submit" disabled={pristine || invalid || submitting}>Save</Button>
+            <Button bsStyle="default" type="button" disabled={pristine || submitting} onClick={reset}>Reset</Button>
+          </ButtonToolbar>
+        </Col>
 
       </form>
     </div>
@@ -68,5 +62,6 @@ const FieldLevelValidationForm = (props) => {
 };
 
 export default reduxForm({
-  form: 'fieldLevelValidation' // a unique identifier for this form
+  form: 'fieldLevelValidation'// a unique identifier for this form
+  // touchOnChange: true
 })(FieldLevelValidationForm)

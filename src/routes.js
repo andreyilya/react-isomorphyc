@@ -6,7 +6,7 @@ import HomePage from './pages/HomePage';
 import FuelSavingsPage from './pages/FuelSavingsPage'; // eslint-disable-line import/no-named-as-default
 import AboutPage from './pages/AboutPage';
 import NotFoundPage from './pages/NotFoundPage';
-import ReduxFormDemo from './pages/ReduxFormDemo';
+import ReduxFormDemo from './pages/ReduxFormDemoPage';
 
 export default (
   <Route path="/" component={App}>
