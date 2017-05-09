@@ -11,10 +11,10 @@ import "../styles/styles.scss"; // Yep, that's right. You can import SASS/CSS fi
 
 
 let FieldLevelValidationForm = (props) => {
-  const {handleSubmit, pristine, reset, submitting, invalid, load} = props;
+  const {handleSubmit, pristine, reset, submitting, invalid, load, id} = props;
   return (
     <div>
-      <h2>Redux validation</h2>
+      <h2>Redux validation for supplier {id}</h2>
       <form className="form-horizontal" onSubmit={handleSubmit}>
         <Field name="companyName" type="text"
                component={TextInputRedux} label="companyName"
