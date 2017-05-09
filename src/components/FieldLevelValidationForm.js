@@ -6,7 +6,7 @@ import Button from "react-bootstrap/lib/Button";
 import ButtonToolbar from "react-bootstrap/lib/ButtonToolbar";
 import Col from "react-bootstrap/lib/Col";
 import {aol, email, maxLength15, minValue18, number, required, tooOld} from "../validators/validatorsForFormat";
-import {load as loadAccount} from "../reducers/supplierReducer";
+import {load as loadSupplier} from "../reducers/supplierReducer";
 import "../styles/styles.scss"; // Yep, that's right. You can import SASS/CSS files too! Webpack will run the associated loader and plug this into the page.
 
 
@@ -57,6 +57,6 @@ FieldLevelValidationForm = connect(
   state => ({
     initialValues: state.supplierReducer.data // pull initial values from account reducer
   }),
-  {load : loadAccount}               // bind account loading action creator
+  {load : loadSupplier}               // bind account loading action creator
 )(FieldLevelValidationForm);
 export default FieldLevelValidationForm
