@@ -1,6 +1,5 @@
 // Quack! This is a duck. https://github.com/erikras/ducks-modular-redux
 import {LOAD} from "../constants/actionTypes";
-import SupplierService from "../api/SupplierService";
 
 
 const supplierReducer = (state = {}, action) => {
@@ -17,6 +16,17 @@ const supplierReducer = (state = {}, action) => {
 /**
  * Simulates data loaded into this supplierReducer from somewhere
  */
-export const load = data => ({ type: LOAD, data });
+export const load = (id) => {
+    return function (dispatch) {
+      fetch('http://localhost:8082/get-supplier/' + id).then(response => {
+        return response.json();
+      }).then(res => {
+        dispatch({type: LOAD, data: res});
+      }).catch(error => {
+        return error;
+      });
+    }
+  }
+;
 
 export default supplierReducer
