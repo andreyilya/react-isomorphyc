@@ -1,11 +1,10 @@
 import React from "react";
 import FieldLevelValidationForm from "../components/FieldLevelValidationForm";
-import SupplierService from "../api/SupplierService";
 import {connect} from "react-redux";
 import {Link} from "react-router";
 import Modal from "react-bootstrap/lib/Modal";
 import Button from "react-bootstrap/lib/Button";
-import {load} from "../reducers/supplierReducer";
+import {load} from "../actions/supplierActions";
 
 
 class ReduxFormDemoPage extends React.Component {
@@ -16,9 +15,7 @@ class ReduxFormDemoPage extends React.Component {
   }
 
   submit = (values) => {
-    return SupplierService.getSuppliers().then(res => {
-      console.log(res);
-    });
+    alert(values)
   };
 
   componentWillMount() {

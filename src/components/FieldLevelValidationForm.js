@@ -14,7 +14,8 @@ import {
   required,
   tooOld
 } from "../validators/validatorsForFormat";
-import {load} from "../reducers/supplierReducer";
+import {load} from "../actions/supplierActions";
+import supplierReducer from "../reducers/supplierReducer";
 import "../styles/styles.scss"; // Yep, that's right. You can import SASS/CSS files too! Webpack will run the associated loader and plug this into the page.
 
 
