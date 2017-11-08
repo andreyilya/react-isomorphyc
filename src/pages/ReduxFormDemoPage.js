@@ -5,6 +5,7 @@ import {connect} from "react-redux";
 import {Link} from "react-router";
 import Modal from "react-bootstrap/lib/Modal";
 import Button from "react-bootstrap/lib/Button";
+import {load} from "../reducers/supplierReducer";
 
 
 class ReduxFormDemoPage extends React.Component {
@@ -20,15 +21,25 @@ class ReduxFormDemoPage extends React.Component {
     });
   };
 
+  componentWillUpdate(nextProps, nextState) {
+    if (nextProps.id) {
+      this.props.load(nextProps.id);
+    }
+  }
+
   render() {
 
     let smClose = () => this.setState({smShow: false});
     return (
       <div><FieldLevelValidationForm onSubmit={this.submit} id={this.props.id}/>
-        <Button bsStyle="default" type="button" onClick={() => this.setState({smShow: true})}>Open modal</Button>
-        <Modal bsSize="large" show={this.state.smShow} aria-labelledby="contained-modal-title-lg">
+        <Button bsStyle="default" type="button"
+                onClick={() => this.setState({smShow: true})}>Open
+          modal</Button>
+        <Modal bsSize="large" show={this.state.smShow}
+               aria-labelledby="contained-modal-title-lg">
           <Modal.Header closeButton>
-            <Modal.Title id="contained-modal-title-lg">Modal heading</Modal.Title>
+            <Modal.Title id="contained-modal-title-lg">Modal
+              heading</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <h4>Wrapped Text</h4>
@@ -45,6 +56,7 @@ class ReduxFormDemoPage extends React.Component {
     );
   }
 }
+
 function mapStateToProps(state, ownProps) {
   return {
     id: ownProps.params.id,
@@ -53,5 +65,8 @@ function mapStateToProps(state, ownProps) {
 }
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  dispatch => ({
+    load: id => dispatch(load(id))
+  })
 )(ReduxFormDemoPage);
