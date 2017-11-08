@@ -21,6 +21,12 @@ class ReduxFormDemoPage extends React.Component {
     });
   };
 
+  componentWillMount() {
+    if (this.props.id) {
+      this.props.load(this.props.id);
+    }
+  }
+
   componentWillUpdate(nextProps, nextState) {
     if (nextProps.id) {
       this.props.load(nextProps.id);
