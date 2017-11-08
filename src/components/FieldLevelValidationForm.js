@@ -14,18 +14,17 @@ import {
   required,
   tooOld
 } from "../validators/validatorsForFormat";
-import {load} from "../actions/supplierActions";
-import supplierReducer from "../reducers/supplierReducer";
 import "../styles/styles.scss"; // Yep, that's right. You can import SASS/CSS files too! Webpack will run the associated loader and plug this into the page.
 
 
-let FieldLevelValidationForm = (props) => {
-  const {handleSubmit, pristine, reset, submitting, invalid, load, id} = props;
+let FieldLevelValidationForm = ({
+  onSubmit, pristine, reset, submitting, invalid, id
+}) => {
 
   return (
     <div>
       <h2>Redux validation for supplier {id}</h2>
-      <form className="form-horizontal" onSubmit={handleSubmit}>
+      <form className="form-horizontal" onSubmit={onSubmit}>
         <Field name="companyName" type="text"
                component={TextInputRedux} label="companyName"
                validate={[required, maxLength15]}
@@ -49,8 +48,6 @@ let FieldLevelValidationForm = (props) => {
           <ButtonToolbar>
             <Button bsStyle="primary" type="submit"
                     disabled={pristine || invalid || submitting}>Save</Button>
-            <Button bsStyle="primary" type="button"
-                    onClick={() => load(id)}>Load</Button>
             <Button bsStyle="default" type="button"
                     disabled={pristine || submitting}
                     onClick={reset}>Reset</Button>
@@ -65,17 +62,13 @@ let FieldLevelValidationForm = (props) => {
 FieldLevelValidationForm = reduxForm({
   form: 'fieldLevelValidation', // a unique identifier for this form
   // touchOnChange: true
-  enableReinitialize : true,
+  enableReinitialize: true,
 
 })(FieldLevelValidationForm);
 
 FieldLevelValidationForm = connect(
   state => ({
     initialValues: state.supplierReducer.data // pull initial values from account reducer
-  }),
-  dispatch => ({
-    load: id => dispatch(load(id))
   })
-  // bind account loading action creator
 )(FieldLevelValidationForm);
 export default FieldLevelValidationForm

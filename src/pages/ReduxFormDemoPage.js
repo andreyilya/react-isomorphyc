@@ -34,7 +34,7 @@ class ReduxFormDemoPage extends React.Component {
 
     let smClose = () => this.setState({smShow: false});
     return (
-      <div><FieldLevelValidationForm onSubmit={this.submit} id={this.props.id}/>
+      <div><FieldLevelValidationForm/>
         <Button bsStyle="default" type="button"
                 onClick={() => this.setState({smShow: true})}>Open
           modal</Button>
@@ -63,7 +63,8 @@ class ReduxFormDemoPage extends React.Component {
 function mapStateToProps(state, ownProps) {
   return {
     id: ownProps.params.id,
-    filter: ownProps.location.query.filter
+    filter: ownProps.location.query.filter,
+    onSubmit: this.submit
   };
 }
 
