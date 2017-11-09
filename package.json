@@ -35,7 +35,7 @@
     "react-dom": "15.4.1",
     "react-redux": "5.0.1",
     "react-router": "3.0.0",
-    "react-bootstrap": "*",
+    "react-bootstrap": "0.31.5",
     "lodash": "*",
     "react-router-redux": "4.0.7",
     "express": "~4.13.4",

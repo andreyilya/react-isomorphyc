@@ -53,6 +53,7 @@ let FieldLevelValidationForm = ({
                     onClick={reset}>Reset</Button>
           </ButtonToolbar>
         </Col>
+        <div className='clearfix'/>
 
       </form>
     </div>
