@@ -1,11 +1,11 @@
 import React from "react";
 import FieldLevelValidationForm from "../components/FieldLevelValidationForm";
 import {connect} from "react-redux";
-import {Link} from "react-router";
+import {browserHistory, Link} from "react-router";
 import Modal from "react-bootstrap/lib/Modal";
 import Button from "react-bootstrap/lib/Button";
 import {load} from "../actions/supplierActions";
-
+import {push} from 'react-router-redux';
 
 class ReduxFormDemoPage extends React.Component {
 
@@ -20,10 +20,20 @@ class ReduxFormDemoPage extends React.Component {
 
   componentWillMount() {
     this.loadSupplier(this.props);
+    if (this.props.id) {
+      this.openModal();
+    }
   }
 
   componentWillUpdate(nextProps, nextState) {
-    this.loadSupplier(nextProps);
+
+    if (nextProps.id && this.props.id !== nextProps.id) {
+      this.loadSupplier(nextProps);
+      this.openModal();
+    } else if (!nextProps.id && this.props.id) {
+      this.closeModal();
+    }
+
   }
 
   loadSupplier = (props) => {
@@ -32,16 +42,33 @@ class ReduxFormDemoPage extends React.Component {
     }
   };
 
-  closeModal = () => this.setState({smShow: false});
+  closeModal = () => {
+    if (this.props.id) {
+      browserHistory.push('/redux-form');
+    }
+    this.setState({smShow: false})
+
+  };
   openModal = () => this.setState({smShow: true});
 
   render() {
-
+    let suppliers = [{name: "name1", email: "email 1", key: 1},
+      {name: "name2", email: "email 2", key: 2}];
+    let supplierList = suppliers.map(function (item) {
+      return <tr key={item.key}>
+        <td>
+          <Link to={'/redux-form/' + item.key}>{item.name}</Link>
+        </td>
+        <td>
+          {item.email}
+        </td>
+      </tr>;
+    });
+    let tableClassName = 'table table-striped';
     return (
-      <div><FieldLevelValidationForm/>
+      <div>
         <Button bsStyle="default" type="button"
-                onClick={() => this.openModal()}>Open
-          modal</Button>
+                onClick={() => this.openModal()}>Create new</Button>
         <Modal bsSize="large" show={this.state.smShow} onHide={this.closeModal}
                aria-labelledby="contained-modal-title-lg">
           <Modal.Header closeButton>
@@ -49,16 +76,21 @@ class ReduxFormDemoPage extends React.Component {
               heading</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <h4>Wrapped Text</h4>
+            <h4>Create/edit supplier</h4>
+            <FieldLevelValidationForm/>
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={this.closeModal}>Close</Button>
           </Modal.Footer>
         </Modal>
-        <p>Other suppliers</p>
-        <Link to="/redux-form/1">Supplier 1</Link>{' | '}
-        <Link to="/redux-form/2">Supplier 2</Link>{' | '}
-        <Link to="/redux-form/3">Supplier 3</Link>
+
+        <h1>Supplier List</h1>
+        <table className={tableClassName}>
+          <tbody>
+          {supplierList}
+          </tbody>
+        </table>
+
       </div>
     );
   }
@@ -72,9 +104,14 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
+const mapDispatchToProps = dispatch => {
+  return {
+    changeRoute: (url) => dispatch(push(url)),
+    load: id => dispatch(load(id))
+  }
+};
+
 export default connect(
   mapStateToProps,
-  dispatch => ({
-    load: id => dispatch(load(id))
-  })
+  mapDispatchToProps
 )(ReduxFormDemoPage);
