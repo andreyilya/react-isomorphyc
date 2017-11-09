@@ -19,26 +19,30 @@ class ReduxFormDemoPage extends React.Component {
   };
 
   componentWillMount() {
-    if (this.props.id) {
-      this.props.load(this.props.id);
-    }
+    this.loadSupplier(this.props);
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if (nextProps.id) {
-      this.props.load(nextProps.id);
-    }
+    this.loadSupplier(nextProps);
   }
+
+  loadSupplier = (props) => {
+    if (props.id) {
+      props.load(props.id);
+    }
+  };
+
+  closeModal = () => this.setState({smShow: false});
+  openModal = () => this.setState({smShow: true});
 
   render() {
 
-    let smClose = () => this.setState({smShow: false});
     return (
       <div><FieldLevelValidationForm/>
         <Button bsStyle="default" type="button"
-                onClick={() => this.setState({smShow: true})}>Open
+                onClick={() => this.openModal()}>Open
           modal</Button>
-        <Modal bsSize="large" show={this.state.smShow}
+        <Modal bsSize="large" show={this.state.smShow} onHide={this.closeModal}
                aria-labelledby="contained-modal-title-lg">
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-lg">Modal
@@ -48,7 +52,7 @@ class ReduxFormDemoPage extends React.Component {
             <h4>Wrapped Text</h4>
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={smClose}>Close</Button>
+            <Button onClick={this.closeModal}>Close</Button>
           </Modal.Footer>
         </Modal>
         <p>Other suppliers</p>
