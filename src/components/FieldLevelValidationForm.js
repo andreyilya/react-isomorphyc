@@ -1,4 +1,4 @@
-import React from "react";
+import React, {PropTypes} from 'react';
 import {Field, reduxForm} from "redux-form";
 import {connect} from "react-redux";
 import {TextInputRedux} from "../components/TextInputRedux";
@@ -14,13 +14,12 @@ import {
   required,
   tooOld
 } from "../validators/validatorsForFormat";
-import "../styles/styles.scss"; // Yep, that's right. You can import SASS/CSS files too! Webpack will run the associated loader and plug this into the page.
+import "../styles/styles.scss";
 
 
 let FieldLevelValidationForm = ({
-                                  onSubmit, pristine, reset, submitting, invalid, id
-                                }) => {
-
+  onSubmit, pristine, reset, submitting, invalid, id
+}) => {
   return (
     <div>
       <h2>Redux validation for supplier {id}</h2>
@@ -53,11 +52,21 @@ let FieldLevelValidationForm = ({
                     onClick={reset}>Reset</Button>
           </ButtonToolbar>
         </Col>
-        <div className='clearfix'/>
+        <div className="clearfix"/>
 
       </form>
     </div>
-  )
+  );
+};
+
+
+FieldLevelValidationForm.propTypes = {
+  onSubmit: PropTypes.func,
+  pristine: PropTypes.bool,
+  reset: PropTypes.func,
+  submitting: PropTypes.bool,
+  invalid: PropTypes.bool,
+  id: PropTypes.number,
 };
 
 FieldLevelValidationForm = reduxForm({
@@ -69,7 +78,8 @@ FieldLevelValidationForm = reduxForm({
 
 FieldLevelValidationForm = connect(
   state => ({
-    initialValues: state.supplierReducer.data // pull initial values from account reducer
+    initialValues: state.supplierReducer.data
   })
 )(FieldLevelValidationForm);
-export default FieldLevelValidationForm
+
+export default FieldLevelValidationForm;

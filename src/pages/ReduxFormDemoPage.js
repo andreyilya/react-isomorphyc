@@ -1,23 +1,28 @@
-import React from "react";
+import React, {PropTypes} from "react";
 import FieldLevelValidationForm from "../components/FieldLevelValidationForm";
 import {connect} from "react-redux";
-import {browserHistory, Link} from "react-router";
 import Modal from "react-bootstrap/lib/Modal";
 import Button from "react-bootstrap/lib/Button";
-import {load} from "../actions/supplierActions";
-import {push} from 'react-router-redux';
+import {
+  closeSupplierModal,
+  loadSupplier,
+  loadSuppliers,
+  openModal
+} from "../actions/supplierActions";
+import {SupplierList} from "../components/SupplierList";
 
 class ReduxFormDemoPage extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {smShow: false};
   }
 
   componentWillMount() {
     this.loadSupplier(this.props);
     if (this.props.id) {
-      this.openModal();
+      this.props.openModal("supplierModal");
+    } else {
+      this.loadSuppliers(this.props);
     }
   }
 
@@ -25,51 +30,39 @@ class ReduxFormDemoPage extends React.Component {
 
     if (nextProps.id && this.props.id !== nextProps.id) {
       this.loadSupplier(nextProps);
-      this.openModal();
+      this.props.openModal("supplierModal");
     } else if (!nextProps.id && this.props.id) {
-      this.closeModal();
+      this.props.closeModal("supplierModal", this.props.id);
+      this.loadSuppliers(nextProps);
     }
   }
 
+
   submit = (e, values) => {
     e.preventDefault();
-    alert(values)
+    alert(values);
   };
 
   loadSupplier = (props) => {
     if (props.id) {
-      props.load(props.id);
+      props.loadSupplier(props.id);
     }
   };
-
-  closeModal = () => {
-    if (this.props.id) {
-      browserHistory.push('/redux-form');
+  loadSuppliers = (props) => {
+    if (!props.id) {
+      props.loadSuppliers();
     }
-    this.setState({smShow: false})
-
   };
-  openModal = () => this.setState({smShow: true});
 
   render() {
-    let suppliers = [{name: "name1", email: "email 1", key: 1},
-      {name: "name2", email: "email 2", key: 2}];
-    let supplierList = suppliers.map(function (item) {
-      return <tr key={item.key}>
-        <td>
-          <Link to={'/redux-form/' + item.key}>{item.name}</Link>
-        </td>
-        <td>
-          {item.email}
-        </td>
-      </tr>;
-    });
-    let tableClassName = 'table table-striped';
     return (
       <div>
         <Button bsStyle="default" type="button"
-                onClick={() => this.openModal()}>Create new</Button>
-        <Modal bsSize="large" show={this.state.smShow} onHide={this.closeModal}
+                onClick={() => this.props.openModal("supplierModal")}>Create
+          new</Button>
+        <Modal bsSize="large" show={this.props.modalOpen}
+               onHide={() => this.props.closeModal("supplierModal",
+                 this.props.id)}
                aria-labelledby="contained-modal-title-lg">
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-lg">Modal
@@ -80,35 +73,44 @@ class ReduxFormDemoPage extends React.Component {
             <FieldLevelValidationForm onSubmit={this.submit}/>
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={this.closeModal}>Close</Button>
+            <Button onClick={() => this.props.closeModal("supplierModal",
+              this.props.id)}>Close</Button>
           </Modal.Footer>
         </Modal>
 
         <h1>Supplier List</h1>
-        <table className={tableClassName}>
-          <tbody>
-          {supplierList}
-          </tbody>
-        </table>
+        <SupplierList suppliers={this.props.suppliers}/>
 
       </div>
     );
   }
 }
 
+ReduxFormDemoPage.propTypes = {
+  id: PropTypes.string,
+  modalOpen: PropTypes.bool,
+  openModal: PropTypes.func,
+  closeModal: PropTypes.func,
+  loadSuppliers: PropTypes.func,
+  suppliers: PropTypes.object
+};
+
+
 function mapStateToProps(state, ownProps) {
   return {
     id: ownProps.params.id,
-    filter: ownProps.location.query.filter,
-    onSubmit: this.submit
+    modalOpen: state.modalReducer["supplierModal"],
+    suppliers: state.supplierListReducer.suppliers
   };
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    changeRoute: (url) => dispatch(push(url)),
-    load: id => dispatch(load(id))
-  }
+    loadSupplier: id => dispatch(loadSupplier(id)),
+    loadSuppliers: () => dispatch(loadSuppliers()),
+    openModal: modalId => dispatch(openModal(modalId)),
+    closeModal: (modalId, id) => dispatch(closeSupplierModal(modalId, id))
+  };
 };
 
 export default connect(
