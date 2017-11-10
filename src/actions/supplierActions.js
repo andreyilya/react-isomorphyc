@@ -9,5 +9,5 @@ export const load = (id) => {
     }).catch(error => {
       return error;
     });
-  }
+  };
 };

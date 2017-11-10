@@ -1,11 +1,10 @@
-import React from "react";
+import React, {PropTypes} from "react";
 import FieldLevelValidationForm from "../components/FieldLevelValidationForm";
 import {connect} from "react-redux";
 import {browserHistory, Link} from "react-router";
 import Modal from "react-bootstrap/lib/Modal";
 import Button from "react-bootstrap/lib/Button";
 import {load} from "../actions/supplierActions";
-import {push} from 'react-router-redux';
 
 class ReduxFormDemoPage extends React.Component {
 
@@ -13,10 +12,6 @@ class ReduxFormDemoPage extends React.Component {
     super(props);
     this.state = {smShow: false};
   }
-
-  submit = (values) => {
-    alert(values)
-  };
 
   componentWillMount() {
     this.loadSupplier(this.props);
@@ -33,8 +28,13 @@ class ReduxFormDemoPage extends React.Component {
     } else if (!nextProps.id && this.props.id) {
       this.closeModal();
     }
-
   }
+
+
+  submit = (e, values) => {
+    e.preventDefault();
+    alert(values);
+  };
 
   loadSupplier = (props) => {
     if (props.id) {
@@ -46,7 +46,7 @@ class ReduxFormDemoPage extends React.Component {
     if (this.props.id) {
       browserHistory.push('/redux-form');
     }
-    this.setState({smShow: false})
+    this.setState({smShow: false});
 
   };
   openModal = () => this.setState({smShow: true});
@@ -55,14 +55,16 @@ class ReduxFormDemoPage extends React.Component {
     let suppliers = [{name: "name1", email: "email 1", key: 1},
       {name: "name2", email: "email 2", key: 2}];
     let supplierList = suppliers.map(function (item) {
-      return <tr key={item.key}>
-        <td>
-          <Link to={'/redux-form/' + item.key}>{item.name}</Link>
-        </td>
-        <td>
-          {item.email}
-        </td>
-      </tr>;
+      return (
+        <tr key={item.key}>
+          <td>
+            <Link to={'/redux-form/' + item.key}>{item.name}</Link>
+          </td>
+          <td>
+            {item.email}
+          </td>
+        </tr>
+      );
     });
     let tableClassName = 'table table-striped';
     return (
@@ -77,7 +79,7 @@ class ReduxFormDemoPage extends React.Component {
           </Modal.Header>
           <Modal.Body>
             <h4>Create/edit supplier</h4>
-            <FieldLevelValidationForm/>
+            <FieldLevelValidationForm onSubmit={this.submit}/>
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={this.closeModal}>Close</Button>
@@ -96,19 +98,21 @@ class ReduxFormDemoPage extends React.Component {
   }
 }
 
+ReduxFormDemoPage.propTypes = {
+  id: PropTypes.number,
+};
+
+
 function mapStateToProps(state, ownProps) {
   return {
-    id: ownProps.params.id,
-    filter: ownProps.location.query.filter,
-    onSubmit: this.submit
+    id: ownProps.params.id
   };
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    changeRoute: (url) => dispatch(push(url)),
     load: id => dispatch(load(id))
-  }
+  };
 };
 
 export default connect(

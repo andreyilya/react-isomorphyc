@@ -8,8 +8,8 @@ const supplierReducer = (state = {}, action) => {
         data: action.data
       };
     default:
-      return state
+      return state;
   }
 };
 
-export default supplierReducer
+export default supplierReducer;
