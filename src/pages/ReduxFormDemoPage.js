@@ -1,10 +1,10 @@
 import React, {PropTypes} from "react";
 import FieldLevelValidationForm from "../components/FieldLevelValidationForm";
 import {connect} from "react-redux";
-import {Link} from "react-router";
 import Modal from "react-bootstrap/lib/Modal";
 import Button from "react-bootstrap/lib/Button";
 import {closeSupplierModal, load, openModal} from "../actions/supplierActions";
+import {SupplierList} from "../components/SupplierList";
 
 class ReduxFormDemoPage extends React.Component {
 
@@ -44,25 +44,15 @@ class ReduxFormDemoPage extends React.Component {
   render() {
     let suppliers = [{name: "name1", email: "email 1", key: 1},
       {name: "name2", email: "email 2", key: 2}];
-    let supplierList = suppliers.map(function (item) {
-      return (
-        <tr key={item.key}>
-          <td>
-            <Link to={'/redux-form/' + item.key}>{item.name}</Link>
-          </td>
-          <td>
-            {item.email}
-          </td>
-        </tr>
-      );
-    });
-    let tableClassName = 'table table-striped';
+
     return (
       <div>
         <Button bsStyle="default" type="button"
-                onClick={() => this.props.openModal("supplierModal")}>Create new</Button>
+                onClick={() => this.props.openModal("supplierModal")}>Create
+          new</Button>
         <Modal bsSize="large" show={this.props.modalOpen}
-               onHide={() => this.props.closeModal("supplierModal", this.props.id)}
+               onHide={() => this.props.closeModal("supplierModal",
+                 this.props.id)}
                aria-labelledby="contained-modal-title-lg">
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-lg">Modal
@@ -73,16 +63,13 @@ class ReduxFormDemoPage extends React.Component {
             <FieldLevelValidationForm onSubmit={this.submit}/>
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={() => this.props.closeModal("supplierModal", this.props.id)}>Close</Button>
+            <Button onClick={() => this.props.closeModal("supplierModal",
+              this.props.id)}>Close</Button>
           </Modal.Footer>
         </Modal>
 
         <h1>Supplier List</h1>
-        <table className={tableClassName}>
-          <tbody>
-          {supplierList}
-          </tbody>
-        </table>
+        <SupplierList suppliers={suppliers}/>
 
       </div>
     );
