@@ -16,12 +16,12 @@ export const clearSupplier = () => {
   return {type: LOAD, data: {}};
 };
 
-export const openModal = (id) => {
-  return {type: OPEN_MODAL, id};
+export const openModal = (modalId) => {
+  return {type: OPEN_MODAL, modalId};
 };
 
 
-export const closeModal = (modalId, id) => {
+export const closeModal = (modalId) => {
   return {type: CLOSE_MODAL, modalId};
 };
 
@@ -31,6 +31,6 @@ export const closeSupplierModal = (id) => {
       browserHistory.push('/redux-form');
     }
     dispatch(clearSupplier());
-    dispatch(closeModal("id", id));
+    dispatch(closeModal("supplierModal"));
   };
 };

@@ -15,7 +15,7 @@ class ReduxFormDemoPage extends React.Component {
   componentWillMount() {
     this.loadSupplier(this.props);
     if (this.props.id) {
-      this.props.openModal("id");
+      this.props.openModal("supplierModal");
     }
   }
 
@@ -23,9 +23,9 @@ class ReduxFormDemoPage extends React.Component {
 
     if (nextProps.id && this.props.id !== nextProps.id) {
       this.loadSupplier(nextProps);
-      this.props.openModal("id");
+      this.props.openModal("supplierModal");
     } else if (!nextProps.id && this.props.id) {
-      this.props.closeModal("id", this.props.id);
+      this.props.closeModal("supplierModal", this.props.id);
     }
   }
 
@@ -60,9 +60,9 @@ class ReduxFormDemoPage extends React.Component {
     return (
       <div>
         <Button bsStyle="default" type="button"
-                onClick={() => this.props.openModal("id")}>Create new</Button>
+                onClick={() => this.props.openModal("supplierModal")}>Create new</Button>
         <Modal bsSize="large" show={this.props.modalOpen}
-               onHide={() => this.props.closeModal("id", this.props.id)}
+               onHide={() => this.props.closeModal("supplierModal", this.props.id)}
                aria-labelledby="contained-modal-title-lg">
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-lg">Modal
@@ -73,7 +73,7 @@ class ReduxFormDemoPage extends React.Component {
             <FieldLevelValidationForm onSubmit={this.submit}/>
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={() => this.props.closeModal("id", this.props.id)}>Close</Button>
+            <Button onClick={() => this.props.closeModal("supplierModal", this.props.id)}>Close</Button>
           </Modal.Footer>
         </Modal>
 
@@ -100,14 +100,14 @@ ReduxFormDemoPage.propTypes = {
 function mapStateToProps(state, ownProps) {
   return {
     id: ownProps.params.id,
-    modalOpen: state.modalReducer.modalOpen
+    modalOpen: state.modalReducer["supplierModal"]
   };
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     load: id => dispatch(load(id)),
-    openModal: id => dispatch(openModal(id)),
+    openModal: modalId => dispatch(openModal(modalId)),
     closeModal: (modalId, id) => dispatch(closeSupplierModal(modalId, id))
   };
 };

@@ -1,16 +1,15 @@
 import {CLOSE_MODAL, OPEN_MODAL} from "../constants/actionTypes";
+import objectAssign from "object-assign";
 
-
-const modalReducer = (state = {modalOpen: false}, action) => {
+const modalReducer = (state = {}, action) => {
+  let assignedObject = objectAssign({}, state);
   switch (action.type) {
     case OPEN_MODAL:
-      return {
-        modalOpen: true
-      };
+      assignedObject[action.modalId] = true;
+      return assignedObject;
     case CLOSE_MODAL:
-      return {
-        modalOpen: false
-      };
+      assignedObject[action.modalId] = false;
+      return assignedObject;
     default:
       return state;
   }
