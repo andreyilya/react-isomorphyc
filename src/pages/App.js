@@ -4,7 +4,10 @@ import '../styles/css/bootstrap.css';
 import '../styles/styles.scss';
 
 class App extends React.Component {
+
   render() {
+    let pathname = this.props.location.pathname;
+
     return (
       <div>
         <nav className={"navbar navbar-default"}>
@@ -20,12 +23,16 @@ class App extends React.Component {
             <div className={"collapse navbar-collapse"}
                  id="bs-example-navbar-collapse-1">
               <ul className={"nav navbar-nav"}>
-                <li><IndexLink to="/">Home</IndexLink>
+                <li className={pathname === "/" ? "active" : ""}><IndexLink
+                  to="/">Home</IndexLink>
                 </li>
-                <li><Link to="/about" activeClassName={"active"}>About</Link>
+                <li className={pathname === "/about" ? "active" : ""}><Link
+                  to="/about">About</Link>
                 </li>
-                <li><Link to="/redux-form" activeClassName={"active"}>Redux
-                  form</Link>
+                <li className={pathname.indexOf("/redux-form") >= 0 ? "active"
+                  : ""}>
+                  <Link to="/redux-form">Redux
+                    form</Link>
                 </li>
               </ul>
             </div>
