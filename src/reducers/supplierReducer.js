@@ -1,9 +1,9 @@
-import {LOAD} from "../constants/actionTypes";
+import {LOAD_SUPPLIER} from "../constants/actionTypes";
 
 
 const supplierReducer = (state = {}, action) => {
   switch (action.type) {
-    case LOAD:
+    case LOAD_SUPPLIER:
       return {
         data: action.data
       };

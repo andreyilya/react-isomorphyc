@@ -3,7 +3,12 @@ import FieldLevelValidationForm from "../components/FieldLevelValidationForm";
 import {connect} from "react-redux";
 import Modal from "react-bootstrap/lib/Modal";
 import Button from "react-bootstrap/lib/Button";
-import {closeSupplierModal, load, openModal} from "../actions/supplierActions";
+import {
+  closeSupplierModal,
+  loadSupplier,
+  loadSuppliers,
+  openModal
+} from "../actions/supplierActions";
 import {SupplierList} from "../components/SupplierList";
 
 class ReduxFormDemoPage extends React.Component {
@@ -16,6 +21,8 @@ class ReduxFormDemoPage extends React.Component {
     this.loadSupplier(this.props);
     if (this.props.id) {
       this.props.openModal("supplierModal");
+    } else {
+      this.loadSuppliers(this.props);
     }
   }
 
@@ -26,6 +33,7 @@ class ReduxFormDemoPage extends React.Component {
       this.props.openModal("supplierModal");
     } else if (!nextProps.id && this.props.id) {
       this.props.closeModal("supplierModal", this.props.id);
+      this.loadSuppliers(nextProps);
     }
   }
 
@@ -37,14 +45,16 @@ class ReduxFormDemoPage extends React.Component {
 
   loadSupplier = (props) => {
     if (props.id) {
-      props.load(props.id);
+      props.loadSupplier(props.id);
+    }
+  };
+  loadSuppliers = (props) => {
+    if (!props.id) {
+      props.loadSuppliers();
     }
   };
 
   render() {
-    let suppliers = [{name: "name1", email: "email 1", key: 1},
-      {name: "name2", email: "email 2", key: 2}];
-
     return (
       <div>
         <Button bsStyle="default" type="button"
@@ -69,7 +79,7 @@ class ReduxFormDemoPage extends React.Component {
         </Modal>
 
         <h1>Supplier List</h1>
-        <SupplierList suppliers={suppliers}/>
+        <SupplierList suppliers={this.props.suppliers}/>
 
       </div>
     );
@@ -80,20 +90,24 @@ ReduxFormDemoPage.propTypes = {
   id: PropTypes.string,
   modalOpen: PropTypes.bool,
   openModal: PropTypes.func,
-  closeModal: PropTypes.func
+  closeModal: PropTypes.func,
+  loadSuppliers: PropTypes.func,
+  suppliers: PropTypes.object
 };
 
 
 function mapStateToProps(state, ownProps) {
   return {
     id: ownProps.params.id,
-    modalOpen: state.modalReducer["supplierModal"]
+    modalOpen: state.modalReducer["supplierModal"],
+    suppliers: state.supplierListReducer.suppliers
   };
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    load: id => dispatch(load(id)),
+    loadSupplier: id => dispatch(loadSupplier(id)),
+    loadSuppliers: () => dispatch(loadSuppliers()),
     openModal: modalId => dispatch(openModal(modalId)),
     closeModal: (modalId, id) => dispatch(closeSupplierModal(modalId, id))
   };
