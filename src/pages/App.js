@@ -1,20 +1,37 @@
-import React, { PropTypes } from 'react';
-import { Link, IndexLink } from 'react-router';
+import React, {PropTypes} from 'react';
+import {IndexLink, Link} from 'react-router';
 import '../styles/css/bootstrap.css';
-import '../styles/styles.scss'; // Yep, that's right. You can import SASS/CSS files too! Webpack will run the associated loader and plug this into the page.
+import '../styles/styles.scss';
 
-// This is a class-based component because the current
-// version of hot reloading won't hot reload a stateless
-// component at the top-level.
 class App extends React.Component {
   render() {
     return (
       <div>
-        <IndexLink to="/">Home</IndexLink>
-        {' | '}
-        <Link to="/about">About</Link>
-        {' | '}
-        <Link to="/redux-form">Redux form</Link>
+        <nav className={"navbar navbar-default"}>
+          <div className="container-fluid">
+            <div className="navbar-header">
+              <button type="button" className={"collapsed navbar-toggle"}
+                      data-toggle="collapse"
+                      data-target="#bs-example-navbar-collapse-1"
+                      aria-expanded="false"><span className="sr-only">Toggle navigation</span>
+                <span className="icon-bar"/> <span className="icon-bar"/>
+                <span className="icon-bar"/></button>
+            </div>
+            <div className={"collapse navbar-collapse"}
+                 id="bs-example-navbar-collapse-1">
+              <ul className={"nav navbar-nav"}>
+                <li><IndexLink to="/">Home</IndexLink>
+                </li>
+                <li><Link to="/about" activeClassName={"active"}>About</Link>
+                </li>
+                <li><Link to="/redux-form" activeClassName={"active"}>Redux
+                  form</Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+
         <br/>
         {this.props.children}
       </div>

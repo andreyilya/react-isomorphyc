@@ -8,7 +8,7 @@ export const SupplierList = ({
   if (suppliers.content) {
     supplierList = suppliers.content.map(function (item) {
       return (
-        <tr key={item.key}>
+        <tr key={item.id}>
           <td>
             <Link to={'/redux-form/' + item.id}>{item.companyName}</Link>
           </td>
@@ -19,9 +19,8 @@ export const SupplierList = ({
       );
     });
   }
-  let tableClassName = 'table table-striped';
   return (
-    <table className={tableClassName}>
+    <table className={'table table-striped'}>
       <tbody>
       {supplierList}
       </tbody>
