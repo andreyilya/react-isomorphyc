@@ -78,7 +78,7 @@ FieldLevelValidationForm = reduxForm({
 
 FieldLevelValidationForm = connect(
   state => ({
-    initialValues: state.supplierReducer.data // pull initial values from account reducer
+    initialValues: state.supplierReducer.data
   })
 )(FieldLevelValidationForm);
 

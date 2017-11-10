@@ -1,22 +1,21 @@
 import React, {PropTypes} from "react";
 import FieldLevelValidationForm from "../components/FieldLevelValidationForm";
 import {connect} from "react-redux";
-import {browserHistory, Link} from "react-router";
+import {Link} from "react-router";
 import Modal from "react-bootstrap/lib/Modal";
 import Button from "react-bootstrap/lib/Button";
-import {load} from "../actions/supplierActions";
+import {closeSupplierModal, load, openModal} from "../actions/supplierActions";
 
 class ReduxFormDemoPage extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {smShow: false};
   }
 
   componentWillMount() {
     this.loadSupplier(this.props);
     if (this.props.id) {
-      this.openModal();
+      this.props.openModal("id");
     }
   }
 
@@ -24,9 +23,9 @@ class ReduxFormDemoPage extends React.Component {
 
     if (nextProps.id && this.props.id !== nextProps.id) {
       this.loadSupplier(nextProps);
-      this.openModal();
+      this.props.openModal("id");
     } else if (!nextProps.id && this.props.id) {
-      this.closeModal();
+      this.props.closeModal("id", this.props.id);
     }
   }
 
@@ -41,15 +40,6 @@ class ReduxFormDemoPage extends React.Component {
       props.load(props.id);
     }
   };
-
-  closeModal = () => {
-    if (this.props.id) {
-      browserHistory.push('/redux-form');
-    }
-    this.setState({smShow: false});
-
-  };
-  openModal = () => this.setState({smShow: true});
 
   render() {
     let suppliers = [{name: "name1", email: "email 1", key: 1},
@@ -70,8 +60,9 @@ class ReduxFormDemoPage extends React.Component {
     return (
       <div>
         <Button bsStyle="default" type="button"
-                onClick={() => this.openModal()}>Create new</Button>
-        <Modal bsSize="large" show={this.state.smShow} onHide={this.closeModal}
+                onClick={() => this.props.openModal("id")}>Create new</Button>
+        <Modal bsSize="large" show={this.props.modalOpen}
+               onHide={() => this.props.closeModal("id", this.props.id)}
                aria-labelledby="contained-modal-title-lg">
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-lg">Modal
@@ -82,7 +73,7 @@ class ReduxFormDemoPage extends React.Component {
             <FieldLevelValidationForm onSubmit={this.submit}/>
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={this.closeModal}>Close</Button>
+            <Button onClick={() => this.props.closeModal("id", this.props.id)}>Close</Button>
           </Modal.Footer>
         </Modal>
 
@@ -99,19 +90,25 @@ class ReduxFormDemoPage extends React.Component {
 }
 
 ReduxFormDemoPage.propTypes = {
-  id: PropTypes.number,
+  id: PropTypes.string,
+  modalOpen: PropTypes.bool,
+  openModal: PropTypes.func,
+  closeModal: PropTypes.func
 };
 
 
 function mapStateToProps(state, ownProps) {
   return {
-    id: ownProps.params.id
+    id: ownProps.params.id,
+    modalOpen: state.modalReducer.modalOpen
   };
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    load: id => dispatch(load(id))
+    load: id => dispatch(load(id)),
+    openModal: id => dispatch(openModal(id)),
+    closeModal: (modalId, id) => dispatch(closeSupplierModal(modalId, id))
   };
 };
 
