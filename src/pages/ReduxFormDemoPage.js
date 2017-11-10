@@ -14,10 +14,6 @@ class ReduxFormDemoPage extends React.Component {
     this.state = {smShow: false};
   }
 
-  submit = (values) => {
-    alert(values)
-  };
-
   componentWillMount() {
     this.loadSupplier(this.props);
     if (this.props.id) {
@@ -33,8 +29,12 @@ class ReduxFormDemoPage extends React.Component {
     } else if (!nextProps.id && this.props.id) {
       this.closeModal();
     }
-
   }
+
+  submit = (e, values) => {
+    e.preventDefault();
+    alert(values)
+  };
 
   loadSupplier = (props) => {
     if (props.id) {
@@ -77,7 +77,7 @@ class ReduxFormDemoPage extends React.Component {
           </Modal.Header>
           <Modal.Body>
             <h4>Create/edit supplier</h4>
-            <FieldLevelValidationForm/>
+            <FieldLevelValidationForm onSubmit={this.submit}/>
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={this.closeModal}>Close</Button>
