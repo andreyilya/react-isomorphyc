@@ -22,6 +22,7 @@ export const SupplierList = ({
   return (
     <table className={'table table-striped'}>
       <tbody>
+      <tr><th>Company Name</th><th>Email</th></tr>
       {supplierList}
       </tbody>
     </table>
