@@ -10,6 +10,8 @@ import path from 'path';
 const GLOBALS = {
   'process.env.NODE_ENV': JSON.stringify('production'),
   'process.env.BROWSER': JSON.stringify('true'), // Tells React to build in either dev or prod modes. https://facebook.github.io/react/downloads.html (See bottom)
+  'process.env.API_URL': "http://localhost:8082",
+
   __DEV__: false
 };
 

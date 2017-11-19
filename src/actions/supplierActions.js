@@ -8,7 +8,7 @@ import {browserHistory} from "react-router";
 
 export const loadSupplier = (id) => {
   return function (dispatch) {
-    fetch('http://localhost:8082/get-supplier/' + id).then(response => {
+    fetch(process.env.API_URL + '/get-supplier/' + id).then(response => {
       return response.json();
     }).then(res => {
       dispatch({type: LOAD_SUPPLIER, data: res});
@@ -20,7 +20,7 @@ export const loadSupplier = (id) => {
 
 export const loadSuppliers = () => {
   return function (dispatch) {
-    fetch('http://localhost:8082/get-suppliers/').then(response => {
+    fetch(process.env.API_URL + '/get-suppliers/').then(response => {
       return response.json();
     }).then(res => {
       dispatch({type: LOAD_SUPPLIERS, suppliers: res});
