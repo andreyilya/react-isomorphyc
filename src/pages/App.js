@@ -1,7 +1,9 @@
 import React, {PropTypes} from 'react';
 import {IndexLink, Link} from 'react-router';
-import '../styles/css/bootstrap.css';
-import '../styles/styles.scss';
+if ( process.env.BROWSER ) {
+  require('../styles/css/bootstrap.css');
+  require('../styles/styles.scss');
+}
 
 class App extends React.Component {
 
