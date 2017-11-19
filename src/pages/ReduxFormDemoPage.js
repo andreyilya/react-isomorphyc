@@ -3,12 +3,7 @@ import FieldLevelValidationForm from "../components/FieldLevelValidationForm";
 import {connect} from "react-redux";
 import Modal from "react-bootstrap/lib/Modal";
 import Button from "react-bootstrap/lib/Button";
-import {
-  closeSupplierModal,
-  loadSupplier,
-  loadSuppliers,
-  openModal
-} from "../actions/supplierActions";
+import {closeSupplierModal, loadSupplier, loadSuppliers, openModal} from "../actions/supplierActions";
 import {SupplierList} from "../components/SupplierList";
 
 class ReduxFormDemoPage extends React.Component {
@@ -54,6 +49,10 @@ class ReduxFormDemoPage extends React.Component {
       props.loadSuppliers();
     }
   };
+  getSuppliers = () => {
+    return this.props.suppliers;
+  };
+
 
   render() {
     return (
@@ -80,7 +79,7 @@ class ReduxFormDemoPage extends React.Component {
         </Modal>
 
         <h1>Supplier List</h1>
-        <SupplierList suppliers={this.props.suppliers}/>
+        <SupplierList suppliers={this.getSuppliers()}/>
 
       </div>
     );
