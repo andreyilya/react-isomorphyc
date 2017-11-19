@@ -79,7 +79,7 @@ class ReduxFormDemoPage extends React.Component {
         </Modal>
 
         <h1>Supplier List</h1>
-        <SupplierList suppliers={this.getSuppliers()}/>
+        <SupplierList suppliers={this.getSuppliers()} showWaiting={this.props.supplierLayer}/>
 
       </div>
     );
@@ -89,6 +89,7 @@ class ReduxFormDemoPage extends React.Component {
 ReduxFormDemoPage.propTypes = {
   id: PropTypes.string,
   modalOpen: PropTypes.bool,
+  supplierLayer: PropTypes.bool,
   openModal: PropTypes.func,
   closeModal: PropTypes.func,
   loadSuppliers: PropTypes.func,
@@ -100,6 +101,7 @@ function mapStateToProps(state, ownProps) {
   return {
     id: ownProps.params.id,
     modalOpen: state.modalReducer["supplierModal"],
+    supplierLayer: state.ajaxActionsReducer["supplierLayer"],
     suppliers: state.supplierListReducer.suppliers
   };
 }

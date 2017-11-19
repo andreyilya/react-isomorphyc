@@ -1,8 +1,10 @@
 import {
   CLOSE_MODAL,
+  HIDE_WAITING,
   LOAD_SUPPLIER,
   LOAD_SUPPLIERS,
-  OPEN_MODAL
+  OPEN_MODAL,
+  SHOW_WAITING
 } from "../constants/actionTypes";
 import {browserHistory} from "react-router";
 
@@ -20,11 +22,15 @@ export const loadSupplier = (id) => {
 
 export const loadSuppliers = () => {
   return function (dispatch) {
+//TODO: create own http service
+    dispatch({type: SHOW_WAITING, waitingId: "supplierLayer"});
     fetch(process.env.API_URL + '/get-suppliers/').then(response => {
       return response.json();
     }).then(res => {
       dispatch({type: LOAD_SUPPLIERS, suppliers: res});
+      dispatch({type: HIDE_WAITING, waitingId: "supplierLayer"});
     }).catch(error => {
+      dispatch({type: HIDE_WAITING, waitingId: "supplierLayer"});
       return error;
     });
   };

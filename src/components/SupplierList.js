@@ -1,9 +1,8 @@
 import React, {PropTypes} from "react";
 import {Link} from "react-router";
+import {WaitingLayer} from "./WaitingLayer";
 
-export const SupplierList = ({
-  suppliers
-}) => {
+export const SupplierList = ({suppliers, showWaiting}) => {
   let supplierList;
   if (suppliers.content) {
     supplierList = suppliers.content.map(function (item) {
@@ -20,15 +19,23 @@ export const SupplierList = ({
     });
   }
   return (
-    <table className={'table table-striped'}>
-      <tbody>
-      {supplierList}
-      </tbody>
-    </table>
+    <div>
+      <table className={'table table-striped'} id="suppliers">
+        <tbody>
+        <tr>
+          <th>Id</th>
+          <th>Email</th>
+        </tr>
+        {supplierList}
+        </tbody>
+      </table>
+      <WaitingLayer waitingId={'supplierLayer'} showWaiting={showWaiting}/>
+    </div>
   );
 
 };
 
 SupplierList.propTypes = {
   suppliers: PropTypes.object,
+  showWaiting: PropTypes.bool,
 };
