@@ -1,5 +1,4 @@
 import React, {PropTypes} from "react";
-import {Link} from "react-router-dom";
 import Routes from "../routes";
 import Header from "../components/Header";
 
