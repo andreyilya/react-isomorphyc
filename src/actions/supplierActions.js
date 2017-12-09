@@ -6,7 +6,6 @@ import {
   OPEN_MODAL,
   SHOW_WAITING
 } from "../constants/actionTypes";
-import {browserHistory} from "react-router";
 
 export const loadSupplier = (id) => {
   return function (dispatch) {
@@ -49,10 +48,10 @@ export const closeModal = (modalId) => {
   return {type: CLOSE_MODAL, modalId};
 };
 
-export const closeSupplierModal = (id) => {
+export const closeSupplierModal = (id, history) => {
   return function (dispatch) {
     if (id) {
-      browserHistory.push('/redux-form');
+      history.push('/redux-form');
     }
     dispatch(clearSupplier());
     dispatch(closeModal("supplierModal"));

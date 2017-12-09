@@ -28,7 +28,7 @@ class ReduxFormDemoPage extends React.Component {
       this.loadSupplier(nextProps);
       this.props.openModal("supplierModal");
     } else if (!nextProps.id && this.props.id) {
-      this.props.closeModal("supplierModal", this.props.id);
+      this.props.closeModal("supplierModal", this.props.id, this.getHistory(nextProps));
       this.loadSuppliers(nextProps);
     }
   }
@@ -49,8 +49,13 @@ class ReduxFormDemoPage extends React.Component {
       props.loadSuppliers();
     }
   };
+
   getSuppliers = () => {
     return this.props.suppliers;
+  };
+
+  getHistory = (props) => {
+    return props.history;
   };
 
 
@@ -62,7 +67,7 @@ class ReduxFormDemoPage extends React.Component {
           new</Button>
         <Modal bsSize="large" show={this.props.modalOpen}
                onHide={() => this.props.closeModal("supplierModal",
-                 this.props.id)}
+                 this.props.id, this.getHistory(this.props))}
                aria-labelledby="contained-modal-title-lg">
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-lg">Modal
@@ -74,7 +79,7 @@ class ReduxFormDemoPage extends React.Component {
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={() => this.props.closeModal("supplierModal",
-              this.props.id)}>Close</Button>
+              this.props.id, this.getHistory(this.props))}>Close</Button>
           </Modal.Footer>
         </Modal>
 
@@ -99,7 +104,7 @@ ReduxFormDemoPage.propTypes = {
 
 function mapStateToProps(state, ownProps) {
   return {
-    id: ownProps.params.id,
+    id: ownProps.match.params.id,
     modalOpen: state.modalReducer["supplierModal"],
     supplierLayer: state.ajaxActionsReducer["supplierLayer"],
     suppliers: state.supplierListReducer.suppliers
@@ -111,7 +116,7 @@ const mapDispatchToProps = dispatch => {
     loadSupplier: id => dispatch(loadSupplier(id)),
     loadSuppliers: () => dispatch(loadSuppliers()),
     openModal: modalId => dispatch(openModal(modalId)),
-    closeModal: (modalId, id) => dispatch(closeSupplierModal(modalId, id))
+    closeModal: (modalId, id, history) => dispatch(closeSupplierModal(id, history))
   };
 };
 
