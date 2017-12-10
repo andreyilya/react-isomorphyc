@@ -6,7 +6,7 @@ import App from "./pages/App";
 import {BrowserRouter} from "react-router-dom";
 import configureStore from "./store/configureStore";
 if (process.env.BROWSER) {
-  require('./styles/css/bootstrap.css');
+  require('bootstrap-sass/assets/stylesheets/_bootstrap.scss');
   require('./styles/styles.scss');
 }
 require('./favicon.ico'); // Tell webpack to loadSupplier favicon.ico
