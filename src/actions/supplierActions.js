@@ -1,14 +1,15 @@
 import {
   CLOSE_MODAL,
+  HIDE_WAITING,
   LOAD_SUPPLIER,
   LOAD_SUPPLIERS,
-  OPEN_MODAL
+  OPEN_MODAL,
+  SHOW_WAITING
 } from "../constants/actionTypes";
-import {browserHistory} from "react-router";
 
 export const loadSupplier = (id) => {
   return function (dispatch) {
-    fetch('http://localhost:8082/get-supplier/' + id).then(response => {
+    fetch(process.env.API_URL + '/get-supplier/' + id).then(response => {
       return response.json();
     }).then(res => {
       dispatch({type: LOAD_SUPPLIER, data: res});
@@ -20,11 +21,15 @@ export const loadSupplier = (id) => {
 
 export const loadSuppliers = () => {
   return function (dispatch) {
-    fetch('http://localhost:8082/get-suppliers/').then(response => {
+//TODO: create own http service
+    dispatch({type: SHOW_WAITING, waitingId: "supplierLayer"});
+    fetch(process.env.API_URL + '/get-suppliers/').then(response => {
       return response.json();
     }).then(res => {
       dispatch({type: LOAD_SUPPLIERS, suppliers: res});
+      dispatch({type: HIDE_WAITING, waitingId: "supplierLayer"});
     }).catch(error => {
+      dispatch({type: HIDE_WAITING, waitingId: "supplierLayer"});
       return error;
     });
   };
@@ -43,10 +48,10 @@ export const closeModal = (modalId) => {
   return {type: CLOSE_MODAL, modalId};
 };
 
-export const closeSupplierModal = (id) => {
+export const closeSupplierModal = (id, history) => {
   return function (dispatch) {
     if (id) {
-      browserHistory.push('/redux-form');
+      history.push('/redux-form');
     }
     dispatch(clearSupplier());
     dispatch(closeModal("supplierModal"));

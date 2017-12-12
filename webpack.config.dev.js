@@ -14,7 +14,7 @@ export default {
     // must be first entry to properly set public path
     './src/webpack-public-path',
     'webpack-hot-middleware/client?reload=true',
-    path.resolve(__dirname, 'src/index.js') // Defining path seems necessary for this to work consistently on Windows machines.
+    path.resolve(__dirname, 'src/client.js') // Defining path seems necessary for this to work consistently on Windows machines.
   ],
   target: 'web', // necessary per https://webpack.github.io/docs/testing.html#compile-and-test
   output: {
@@ -25,6 +25,8 @@ export default {
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development'), // Tells React to build in either dev or prod modes. https://facebook.github.io/react/downloads.html (See bottom)
+      'process.env.BROWSER': JSON.stringify('true'), // Tells React to build in either dev or prod modes. https://facebook.github.io/react/downloads.html (See bottom)
+      'process.env.API_URL': JSON.stringify("http://localhost:8082"),
       __DEV__: true
     }),
     new webpack.HotModuleReplacementPlugin(),

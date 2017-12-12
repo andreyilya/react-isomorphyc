@@ -3,12 +3,7 @@ import FieldLevelValidationForm from "../components/FieldLevelValidationForm";
 import {connect} from "react-redux";
 import Modal from "react-bootstrap/lib/Modal";
 import Button from "react-bootstrap/lib/Button";
-import {
-  closeSupplierModal,
-  loadSupplier,
-  loadSuppliers,
-  openModal
-} from "../actions/supplierActions";
+import {closeSupplierModal, loadSupplier, loadSuppliers, openModal} from "../actions/supplierActions";
 import {SupplierList} from "../components/SupplierList";
 
 class ReduxFormDemoPage extends React.Component {
@@ -33,7 +28,7 @@ class ReduxFormDemoPage extends React.Component {
       this.loadSupplier(nextProps);
       this.props.openModal("supplierModal");
     } else if (!nextProps.id && this.props.id) {
-      this.props.closeModal("supplierModal", this.props.id);
+      this.props.closeModal("supplierModal", this.props.id, this.getHistory(nextProps));
       this.loadSuppliers(nextProps);
     }
   }
@@ -55,6 +50,15 @@ class ReduxFormDemoPage extends React.Component {
     }
   };
 
+  getSuppliers = () => {
+    return this.props.suppliers;
+  };
+
+  getHistory = (props) => {
+    return props.history;
+  };
+
+
   render() {
     return (
       <div>
@@ -63,7 +67,7 @@ class ReduxFormDemoPage extends React.Component {
           new</Button>
         <Modal bsSize="large" show={this.props.modalOpen}
                onHide={() => this.props.closeModal("supplierModal",
-                 this.props.id)}
+                 this.props.id, this.getHistory(this.props))}
                aria-labelledby="contained-modal-title-lg">
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-lg">Modal
@@ -75,12 +79,12 @@ class ReduxFormDemoPage extends React.Component {
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={() => this.props.closeModal("supplierModal",
-              this.props.id)}>Close</Button>
+              this.props.id, this.getHistory(this.props))}>Close</Button>
           </Modal.Footer>
         </Modal>
 
         <h1>Supplier List</h1>
-        <SupplierList suppliers={this.props.suppliers}/>
+        <SupplierList suppliers={this.getSuppliers()} showWaiting={this.props.supplierLayer}/>
 
       </div>
     );
@@ -90,6 +94,7 @@ class ReduxFormDemoPage extends React.Component {
 ReduxFormDemoPage.propTypes = {
   id: PropTypes.string,
   modalOpen: PropTypes.bool,
+  supplierLayer: PropTypes.bool,
   openModal: PropTypes.func,
   closeModal: PropTypes.func,
   loadSuppliers: PropTypes.func,
@@ -99,8 +104,9 @@ ReduxFormDemoPage.propTypes = {
 
 function mapStateToProps(state, ownProps) {
   return {
-    id: ownProps.params.id,
+    id: ownProps.match.params.id,
     modalOpen: state.modalReducer["supplierModal"],
+    supplierLayer: state.ajaxActionsReducer["supplierLayer"],
     suppliers: state.supplierListReducer.suppliers
   };
 }
@@ -110,7 +116,7 @@ const mapDispatchToProps = dispatch => {
     loadSupplier: id => dispatch(loadSupplier(id)),
     loadSuppliers: () => dispatch(loadSuppliers()),
     openModal: modalId => dispatch(openModal(modalId)),
-    closeModal: (modalId, id) => dispatch(closeSupplierModal(modalId, id))
+    closeModal: (modalId, id, history) => dispatch(closeSupplierModal(id, history))
   };
 };
 
