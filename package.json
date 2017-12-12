@@ -39,7 +39,6 @@
     "react-bootstrap": "0.31.5",
     "lodash": "*",
     "react-router-redux": "4.0.8",
-    "express": "~4.13.4",
     "redux": "3.6.0",
     "redux-thunk": "2.1.0",
     "redux-form": "7.1.2"
@@ -102,6 +101,7 @@
     "webpack-dev-middleware": "1.12.2",
     "webpack-dev-server": "2.9.7",
     "webpack-hot-middleware": "2.21.0",
+    "express": "~4.13.4",
     "webpack-md5-hash": "0.0.6"
   },
   "keywords": [
