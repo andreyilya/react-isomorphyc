@@ -8,7 +8,7 @@ import {chalkProcessing} from './chalkConfig';
 /* eslint-disable no-console */
 
 console.log(chalkProcessing('Opening production build...'));
-
+//TODO: mifrate to webpack dev server(and config too)
 // Run Browsersync
 browserSync({
   port: 4000,
