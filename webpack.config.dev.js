@@ -10,7 +10,7 @@ export default {
   entry: [
     // must be first entry to properly set public path
     './src/webpack-public-path',
-    'webpack-hot-middleware/client?reload=true',
+    'webpack-dev-server/client?http://localhost:3000/',
     path.resolve(__dirname, 'src/client.js') // Defining path seems necessary for this to work consistently on Windows machines.
   ],
   target: 'web', // necessary per https://webpack.github.io/docs/testing.html#compile-and-test
