@@ -13,7 +13,7 @@ class ReduxFormDemoPage extends React.Component {
   }
 
   componentWillMount() {
-    document.title = "Amazing Page title";
+    document.title = "Redux form";
     this.loadSupplier(this.props);
     if (this.props.id) {
       this.props.openModal("supplierModal");
