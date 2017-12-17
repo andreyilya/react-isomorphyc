@@ -83,7 +83,7 @@ class ReduxFormDemoPage extends React.Component {
           </Modal.Footer>
         </Modal>
 
-        <h1>Supplier List1</h1>
+        <h1>Supplier List</h1>
         <SupplierList suppliers={this.getSuppliers()} showWaiting={this.props.supplierLayer}/>
 
       </div>
