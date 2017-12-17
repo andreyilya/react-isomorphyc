@@ -12,8 +12,16 @@ const bundler = webpack(config);
 // Run Browsersync and use middleware for Hot Module Replacement
 new WebpackDevServer(bundler, {
   publicPath: config.output.publicPath,
+  contentBase: './static',
   hot: true,
   inline: true,
+  proxy: {
+    '/api': {
+      target: "http://localhost:8082",
+      pathRewrite: {'^/api' : ''},
+      secure: false
+    }
+  },
   compress: true,
   historyApiFallback: true,
 }).listen(3000, 'localhost', (err, res) => {

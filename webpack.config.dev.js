@@ -18,13 +18,14 @@ export default {
   output: {
     path: path.resolve(__dirname, 'dist'), // Note: Physical files are only output by the production build task `npm run build`.
     publicPath: '/',
+    // contentBase: './static',
     filename: 'bundle.js'
   },
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development'), // Tells React to build in either dev or prod modes. https://facebook.github.io/react/downloads.html (See bottom)
       'process.env.BROWSER': JSON.stringify('true'), // Tells React to build in either dev or prod modes. https://facebook.github.io/react/downloads.html (See bottom)
-      'process.env.API_URL': JSON.stringify("http://localhost:8082"),
+      'process.env.API_URL': JSON.stringify("/api"),
       __DEV__: true
     }),
     new webpack.LoaderOptionsPlugin({
