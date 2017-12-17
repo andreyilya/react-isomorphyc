@@ -4,7 +4,7 @@
 // Required for react-router browserHistory
 // see https://github.com/BrowserSync/browser-sync/issues/204#issuecomment-102623643
 import webpack from "webpack";
-import config from "../webpack.config.dev";
+import config from "../webpack/webpack.config.dev";
 import WebpackDevServer from "webpack-dev-server";
 
 const bundler = webpack(config);
