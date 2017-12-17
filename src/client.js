@@ -9,7 +9,7 @@ if (process.env.BROWSER) {
   require('bootstrap-sass/assets/stylesheets/_bootstrap.scss');
   require('./styles/styles.scss');
 }
-require('./favicon.ico'); // Tell webpack to loadSupplier favicon.ico
+require('../static/favicon.ico'); // Tell webpack to loadSupplier favicon.ico
 
 const store = configureStore();
 
