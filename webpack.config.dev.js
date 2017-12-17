@@ -18,7 +18,6 @@ export default {
   output: {
     path: path.resolve(__dirname, 'dist'), // Note: Physical files are only output by the production build task `npm run build`.
     publicPath: '/',
-    // contentBase: './static',
     filename: 'bundle.js'
   },
   plugins: [
