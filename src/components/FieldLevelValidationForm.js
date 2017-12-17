@@ -14,7 +14,6 @@ import {
   required,
   tooOld
 } from "../validators/validatorsForFormat";
-import "../styles/styles.scss";
 
 
 let FieldLevelValidationForm = ({
