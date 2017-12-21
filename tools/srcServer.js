@@ -5,6 +5,7 @@ import config from "../webpack/webpack.config.dev";
 import Express from "express";
 import ReactDOMServer from "react-dom/server";
 import React from "react";
+import path from 'path';
 
 import {WaitingLayer} from "../src/components/WaitingLayer";
 const compiler = webpack(config);
@@ -15,9 +16,16 @@ app.use(webpackDevMiddleware(compiler, {noInfo: true, publicPath: config.output.
 app.use(webpackHotMiddleware(compiler));
 
 
-app.get("*", function (req, res) {
-  const html = ReactDOMServer.renderToString(<WaitingLayer showWaiting={true}/>);
-  res.send(html);
+app.get("*", function (req, res, next) {
+  var filename = path.join(compiler.outputPath,'index.html');
+  compiler.outputFileSystem.readFile(filename, function(err, result){
+    if (err) {
+      return next(err);
+    }
+    res.set('content-type','text/html');
+    res.send(result);
+    res.end();
+  });
 });
 
 app.listen(port, function (error) {
