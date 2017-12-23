@@ -18,8 +18,8 @@ const Header = ({path}) => (
           <li className={path === "/" ? "active" : ""}><Link
             to="/">Home</Link>
           </li>
-          <li className={path === "/about" ? "active" : ""}><Link
-            to="/about">About</Link>
+          <li className={path === "/infinite-scroll" ? "active" : ""}><Link
+            to="/infinite-scroll">About</Link>
           </li>
           <li className={path.indexOf("/redux-form") >= 0 ? "active"
             : ""}>

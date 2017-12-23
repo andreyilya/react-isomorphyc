@@ -18,8 +18,11 @@ new WebpackDevServer(bundler, {
   proxy: {
     '/api': {
       target: "http://localhost:8082",
-      pathRewrite: {'^/api' : ''},
+      pathRewrite: {'^/api': ''},
       secure: false
+    },
+    '/uaa': {
+      target: "http://localhost:9999"
     }
   },
   compress: true,

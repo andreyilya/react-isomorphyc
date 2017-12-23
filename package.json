@@ -41,7 +41,9 @@
     "react-router-redux": "4.0.8",
     "redux": "3.6.0",
     "redux-thunk": "2.1.0",
-    "redux-form": "7.1.2"
+    "redux-form": "7.1.2",
+    "jwt-decode": "2.2.0",
+    "query-string": "5.0.1"
   },
   "devDependencies": {
     "autoprefixer": "6.5.4",
