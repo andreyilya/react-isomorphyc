@@ -17,6 +17,21 @@ export const requestToken = (code) => {
     }
     let token = JSON.parse(this.responseText);
     setTokens(token.access_token, token.refresh_token);
+
+
+    let xhr2 = new XMLHttpRequest();
+
+    xhr2.open("GET", process.env.API_URL + '/resource/');
+    xhr2.setRequestHeader("Authorization", 'Bearer ' + getAccessToken());
+    xhr2.onreadystatechange = function () {
+      if (this.readyState !== 4) {
+        return;
+      }
+      alert(this.responseText);
+    };
+    xhr2.send();
+
+
   };
   const params = {
     grant_type: 'authorization_code',
