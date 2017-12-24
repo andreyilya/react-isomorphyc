@@ -1,50 +1,66 @@
 import jwtDecode from "jwt-decode";
 import {CLIENT_ID, CLIENT_SECRET, TIMEOUT} from "./Oauth";
+import axios from "axios";
+import {securedGet} from "./xhr";
 
 const ACCESS_TOKEN = "access_token";
 const REFRESH_TOKEN = "refresh_token";
 
-export const requestToken = (code) => {
-  let xhr = new XMLHttpRequest();
+export const requestToken = (code, history) => {
 
-  xhr.open("POST", '/uaa/oauth/token');
-  xhr.setRequestHeader("Authorization", 'Basic ' + btoa(decodeURIComponent(encodeURIComponent(CLIENT_ID + ":" + CLIENT_SECRET))));
-  xhr.setRequestHeader("Content-Type", 'application/x-www-form-urlencoded');
-
-  xhr.onreadystatechange = function () {
-    if (this.readyState !== 4) {
-      return;
+  let tokenRequest = axios.create({
+    headers: {
+      "Authorization": 'Basic ' + btoa(decodeURIComponent(encodeURIComponent(CLIENT_ID + ":" + CLIENT_SECRET))),
+      "Content-Type": 'application/x-www-form-urlencoded'
     }
-    let token = JSON.parse(this.responseText);
-    setTokens(token.access_token, token.refresh_token);
+  });
 
-
-    let xhr2 = new XMLHttpRequest();
-
-    xhr2.open("GET", process.env.API_URL + '/resource/');
-    xhr2.setRequestHeader("Authorization", 'Bearer ' + getAccessToken());
-    xhr2.onreadystatechange = function () {
-      if (this.readyState !== 4) {
-        return;
-      }
-      alert(this.responseText);
-    };
-    xhr2.send();
-
-
-  };
   const params = {
     grant_type: 'authorization_code',
     code: code,
-    redirect_uri: "http://localhost:3000/login",
+    redirect_uri: process.env.LOGIN_URL,
   };
   const searchParams = Object.keys(params).map((key) => {
     return encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
   }).join('&');
-  xhr.send(searchParams);
 
+  tokenRequest.post('/uaa/oauth/token', searchParams).then(response => {
+    let token = response.data;
+    setTokens(token.access_token, token.refresh_token);
 
+    //TODO: move
+    securedGet(process.env.API_URL + '/resource/').then(response => {
+      console.log(response.data);
+    });
+    history.push(getTargetUrl());
+
+  }).catch(error => {
+    if (error) {
+      redirectToAuthService();
+    }
+  });
 };
+
+export const redirectToAuthService = () => {
+  window.location.href = process.env.AUTH_SERVER_URL + '/uaa/oauth/authorize?client_id=' + CLIENT_ID + '&redirect_uri=' + process.env.LOGIN_URL + '&response_type=code&scope=resource-read';
+};
+export const rememberTargetUrl = (url) => {
+  localStorage.targetUrl = url.pathname;
+};
+export const getTargetUrl = () => {
+  return localStorage.targetUrl;
+};
+export const authenticate = (url) => {
+  rememberTargetUrl(url);
+  redirectToAuthService();
+};
+
+export const logout = () => {
+  //tODO: location from parameters
+  removeTokens();
+  window.location.href = "/";
+};
+
 // export const refreshToken = refresh_token =>
 //   xhr.request(() => createTokenRefreshUrl(refresh_token))
 //     .then(
@@ -69,16 +85,6 @@ export const requestToken = (code) => {
 //         }
 //       }
 //     );
-//
-// export const createTokenRequestUrl = (username, password) =>
-//   URI("/oauth/token")
-//     .query({
-//       grant_type: "password",
-//       client_id: CLIENT_ID,
-//       client_secret: CLIENT_SECRET,
-//       username,
-//       password
-//     }).toString();
 //
 // export const createTokenRefreshUrl = () =>
 //   URI("/oauth/token")
@@ -124,12 +130,17 @@ export const isAccessTokenExpired = token => isTokenExpired(token);
 export const isRefreshTokenExpired = token => isTokenExpired(token);
 
 export const isTokenExpired = token => {
-  if (!token) return true;
-
-  const {exp} = jwtDecode(token);
-  // exp in seconds
-  // token is expired if lifetime smaller then connection timeout
-  return (exp * 1000 - Date.now()) < TIMEOUT;
+  if (!token) {
+    return true;
+  }
+  try {
+    const {exp} = jwtDecode(token);
+    // exp in seconds
+    // token is expired if lifetime smaller then connection timeout
+    return (exp * 1000 - Date.now()) < TIMEOUT;
+  } catch (e) {
+    return true;
+  }
 };
 
 export const validateToken = () => {

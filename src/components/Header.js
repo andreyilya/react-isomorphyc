@@ -1,5 +1,6 @@
 import React, {PropTypes} from "react";
 import {Link} from "react-router-dom";
+import {logout} from "../oauth2/TokenService";
 
 const Header = ({path}) => (
   <nav className={"navbar navbar-default"}>
@@ -25,6 +26,13 @@ const Header = ({path}) => (
             : ""}>
             <Link to="/redux-form">Redux
               form</Link>
+          </li>
+        </ul>
+        <ul className={"nav navbar-nav navbar-right"}>
+          <li>
+            <button style={{'marginTop': '10px'}} type="button" className={"btn btn-default btn-sm"} onClick={logout}>
+              <span className={"glyphicon glyphicon-log-out"}/> Log out
+            </button>
           </li>
         </ul>
       </div>

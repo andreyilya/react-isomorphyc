@@ -1,4 +1,4 @@
-import React, {PropTypes} from "react";
+import React from "react";
 import queryString from "query-string";
 import {requestToken} from "../oauth2/TokenService";
 
@@ -9,7 +9,7 @@ class Oauth2Login extends React.Component {
 
   componentWillMount() {
     let getParameters = queryString.parse(this.props.location.search);
-    requestToken(getParameters.code);
+    requestToken(getParameters.code, this.props.history);
   }
 
   render() {

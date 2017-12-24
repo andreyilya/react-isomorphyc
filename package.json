@@ -43,6 +43,7 @@
     "redux-thunk": "2.1.0",
     "redux-form": "7.1.2",
     "jwt-decode": "2.2.0",
+    "axios": "0.17.1",
     "query-string": "5.0.1"
   },
   "devDependencies": {
