@@ -46,6 +46,9 @@ export const rememberTargetUrl = (url) => {
 export const getTargetUrl = () => {
   return localStorage.targetUrl;
 };
+export const isAuthed = () => {
+  return !(isAccessTokenExpired(getAccessToken()) && isRefreshTokenExpired(getRefreshToken()));
+};
 export const authenticate = (url) => {
   rememberTargetUrl(url);
   redirectToAuthService();

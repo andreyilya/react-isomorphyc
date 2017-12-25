@@ -1,8 +1,14 @@
-import React from "react";
+import React, {PropTypes} from "react";
 import queryString from "query-string";
 import {requestToken} from "../oauth2/TokenService";
 
 class Oauth2Login extends React.Component {
+  static render() {
+    return (
+      <div/>
+    );
+  }
+
   constructor(props) {
     super(props);
   }
@@ -12,10 +18,11 @@ class Oauth2Login extends React.Component {
     requestToken(getParameters.code, this.props.history);
   }
 
-  render() {
-    return (
-      <div/>
-    )
-  }
 }
+
+Oauth2Login.propTypes = {
+  location: PropTypes.object,
+  history: PropTypes.object,
+};
+
 export default Oauth2Login;

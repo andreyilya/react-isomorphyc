@@ -22,6 +22,6 @@ const request = (url, config) => {
         return response;
       }).catch(error => {
         console.debug("server.request.error", error);
-      })
+      });
   });
 };
