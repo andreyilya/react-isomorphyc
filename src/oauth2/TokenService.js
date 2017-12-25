@@ -125,6 +125,7 @@ export const validateAndUpdateTokenIfNecessary = () => {
       ).then((token) => {
           setTokens(token.access_token, token.refresh_token);
           resolve();
+          //TODO: use reject
         }
       );
     } else if (

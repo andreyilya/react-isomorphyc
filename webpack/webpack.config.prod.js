@@ -5,13 +5,14 @@ import ExtractTextPlugin from "extract-text-webpack-plugin";
 import WebpackMd5Hash from "webpack-md5-hash";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import CompressionPlugin from "compression-webpack-plugin";
+import ManifestPlugin from 'webpack-manifest-plugin';//TODO: use https://github.com/webpack-contrib/copy-webpack-plugin
 import path from "path";
 
 const GLOBALS = {
   'process.env.NODE_ENV': JSON.stringify('production'), // Tells React to build in either dev or prod modes. https://facebook.github.io/react/downloads.html (See bottom)
   'process.env.BROWSER': JSON.stringify('true'), // Tells React to build in either dev or prod modes. https://facebook.github.io/react/downloads.html (See bottom)
   'process.env.API_URL': JSON.stringify("/api"),
-  'process.env.LOGIN_URL': JSON.stringify("http://localhost:4000/login"),
+  'process.env.LOGIN_URL': JSON.stringify("http://localhost:3000/login"),
   'process.env.AUTH_SERVER_URL': JSON.stringify("http://localhost:9999"),
 
   __DEV__: false
@@ -77,6 +78,7 @@ export default {
       },
     }),
     new webpack.IgnorePlugin(/^\.\/locale$/, [/moment$/]),
+    new ManifestPlugin(),
     new CompressionPlugin({
       asset: "[path].gz[query]",
       algorithm: "gzip",
