@@ -20,6 +20,7 @@ export const loadSupplier = (id) => {
 
 export const loadSuppliers = () => {
   return function (dispatch) {
+    //TODO: move to interceptor
     dispatch({type: SHOW_WAITING, waitingId: "supplierLayer"});
     securedGet(process.env.API_URL + '/resource/get-suppliers/').then(res => {
       dispatch({type: LOAD_SUPPLIERS, suppliers: res.data});
