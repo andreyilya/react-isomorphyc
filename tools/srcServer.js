@@ -9,7 +9,6 @@ import WebpackDevServer from "webpack-dev-server";
 
 const bundler = webpack(config);
 
-// Run Browsersync and use middleware for Hot Module Replacement
 new WebpackDevServer(bundler, {
   publicPath: config.output.publicPath,
   contentBase: './static',

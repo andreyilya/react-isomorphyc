@@ -1,27 +1,33 @@
-// This file configures a web server for testing the production build
-// on your local machine.
+// This file configures the development web server
+// which supports hot reloading and synchronized testing.
+// Require Browsersync along with webpack and middleware for it
+// Required for react-router browserHistory
+// see https://github.com/BrowserSync/browser-sync/issues/204#issuecomment-102623643
+import webpack from "webpack";
+import config from "../webpack/webpack.config.prod";
+import WebpackDevServer from "webpack-dev-server";
 
-import browserSync from 'browser-sync';
-import historyApiFallback from 'connect-history-api-fallback';
-import {chalkProcessing} from './chalkConfig';
+const bundler = webpack(config);
 
-/* eslint-disable no-console */
-
-console.log(chalkProcessing('Opening production build...'));
-//TODO: mifrate to webpack dev server(and config too)
-// Run Browsersync
-browserSync({
-  port: 4000,
-  ui: {
-    port: 4001
+new WebpackDevServer(bundler, {
+  publicPath: config.output.publicPath,
+  contentBase: './static',
+  hot: false,
+  proxy: {
+    '/api': {
+      target: "http://localhost:9000",
+      pathRewrite: {'^/api': ''},
+      secure: false
+    },
+    '/uaa': {
+      target: "http://localhost:9999"
+    }
   },
-  server: {
-    baseDir: 'dist'
-  },
-
-  files: [
-    'src/*.html'
-  ],
-
-  middleware: [historyApiFallback()]
+  compress: true,
+  historyApiFallback: true,
+}).listen(4000, 'localhost', (err, res) => {
+  if (err) {
+    return console.log(err);
+  }
+  console.log('server is up on port 4000');
 });
