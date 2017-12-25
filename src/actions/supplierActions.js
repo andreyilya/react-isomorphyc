@@ -46,10 +46,12 @@ export const closeModal = (modalId) => {
 
 export const closeSupplierModal = (id, history) => {
   return function (dispatch) {
-    if (id) {
-      history.push('/redux-form');
-    }
-    dispatch(clearSupplier());
     dispatch(closeModal("supplierModal"));
+    dispatch(clearSupplier());
+    setTimeout(function () {
+      if (id) {
+        history.push('/redux-form');
+      }
+    }, 300);
   };
 };

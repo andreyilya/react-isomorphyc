@@ -28,7 +28,7 @@ class ReduxFormDemoPage extends React.Component {
       this.loadSupplier(nextProps);
       this.props.openModal("supplierModal");
     } else if (!nextProps.id && this.props.id) {
-      this.props.closeModal("supplierModal", this.props.id, this.getHistory(nextProps));
+      this.props.closeSupplierModal("supplierModal", this.props.id, this.getHistory(nextProps));
       this.loadSuppliers(nextProps);
     }
   }
@@ -66,7 +66,7 @@ class ReduxFormDemoPage extends React.Component {
                 onClick={() => this.props.openModal("supplierModal")}>Create
           new</Button>
         <Modal bsSize="large" show={this.props.modalOpen}
-               onHide={() => this.props.closeModal("supplierModal",
+               onHide={() => this.props.closeSupplierModal("supplierModal",
                  this.props.id, this.getHistory(this.props))}
                aria-labelledby="contained-modal-title-lg">
           <Modal.Header closeButton>
@@ -78,7 +78,7 @@ class ReduxFormDemoPage extends React.Component {
             <FieldLevelValidationForm onSubmit={this.submit}/>
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={() => this.props.closeModal("supplierModal",
+            <Button onClick={() => this.props.closeSupplierModal("supplierModal",
               this.props.id, this.getHistory(this.props))}>Close</Button>
           </Modal.Footer>
         </Modal>
@@ -96,7 +96,7 @@ ReduxFormDemoPage.propTypes = {
   modalOpen: PropTypes.bool,
   supplierLayer: PropTypes.bool,
   openModal: PropTypes.func,
-  closeModal: PropTypes.func,
+  closeSupplierModal: PropTypes.func,
   loadSuppliers: PropTypes.func,
   suppliers: PropTypes.object
 };
@@ -116,7 +116,7 @@ const mapDispatchToProps = dispatch => {
     loadSupplier: id => dispatch(loadSupplier(id)),
     loadSuppliers: () => dispatch(loadSuppliers()),
     openModal: modalId => dispatch(openModal(modalId)),
-    closeModal: (modalId, id, history) => dispatch(closeSupplierModal(id, history))
+    closeSupplierModal: (modalId, id, history) => dispatch(closeSupplierModal(id, history))
   };
 };
 
