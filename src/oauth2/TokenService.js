@@ -1,27 +1,29 @@
 import jwtDecode from "jwt-decode";
 import {CLIENT_ID, CLIENT_SECRET, TIMEOUT} from "./Oauth";
 import axios from "axios";
+import {backoff} from "../utils/backoff";
 
 const ACCESS_TOKEN = "access_token";
 const REFRESH_TOKEN = "refresh_token";
 
-export const requestToken = (code, history) => {
-
-  let tokenRequest = axios.create({
+let createTokenRequest = function () {
+  return axios.create({
     headers: {
       "Authorization": 'Basic ' + btoa(decodeURIComponent(encodeURIComponent(CLIENT_ID + ":" + CLIENT_SECRET))),
       "Content-Type": 'application/x-www-form-urlencoded'
     }
   });
+};
+export const requestToken = (code, history) => {
+
+  let tokenRequest = createTokenRequest();
 
   const params = {
     grant_type: 'authorization_code',
     code: code,
     redirect_uri: process.env.LOGIN_URL,
   };
-  const searchParams = Object.keys(params).map((key) => {
-    return encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
-  }).join('&');
+  const searchParams = createUrlFormEncoded(params);
 
   tokenRequest.post('/uaa/oauth/token', searchParams).then(response => {
     let token = response.data;
@@ -55,40 +57,6 @@ export const logout = () => {
   window.location.href = "/";
 };
 
-// export const refreshToken = refresh_token =>
-//   xhr.request(() => createTokenRefreshUrl(refresh_token))
-//     .then(
-//       success => {
-//         setAccessToken(success.data.access_token);
-//         setRefreshToken(success.data.refresh_token);
-//         console.debug("refresh token success", success.data.access_token);
-//         return Promise.resolve(success.data.access_token);
-//       },
-//       error => {
-//         console.error("refresh token error", error);
-//
-//         switch (error.type) {
-//           case ERROR_HTTP:
-//             if (error.code === 401) {
-//               return Promise.reject(Error.auth(true, error.message));
-//             } else {
-//               return Promise.reject(Error.auth(false, error.message));
-//             }
-//           default:
-//             return Promise.reject(Error.auth(false, error.message));
-//         }
-//       }
-//     );
-//
-// export const createTokenRefreshUrl = () =>
-//   URI("/oauth/token")
-//     .query({
-//       grant_type: "refresh_token",
-//       client_id: CLIENT_ID,
-//       client_secret: CLIENT_SECRET,
-//       refresh_token: getRefreshToken()
-//     }).toString();
-//
 export const getAccessToken = () => localStorage.getItem(ACCESS_TOKEN);
 
 export const getRefreshToken = () => localStorage.getItem(REFRESH_TOKEN);
@@ -137,40 +105,55 @@ export const isTokenExpired = token => {
   }
 };
 
-export const validateToken = () => {
+export const validateAndUpdateTokenIfNecessary = () => {
   return new Promise((resolve, reject) => {
     const access_token = getAccessToken();
-    if (!access_token) {
-      reject(Error.auth(true, "No access token"));
-      return;
-    }
-
     const refresh_token = getRefreshToken();
-    if (!refresh_token) {
-      reject(Error.auth(true, "No refresh token"));
-      return;
-    }
 
     if (isAccessTokenExpired(access_token) &&
       !isRefreshTokenExpired(refresh_token)) {
-//TODO: backoff?
-      // backoff(
-      //   () => refreshToken(refresh_token),
-      //   {
-      //     attempts: 8,
-      //     minDelay: 1000,
-      //     maxDelay: 10000
-      //   }
-      // ).then(
-      //   success => resolve(success),
-      //   error => reject(error)
-      // );
+      backoff(
+        () => refreshToken(refresh_token),
+        {
+          attempts: 8,
+          minDelay: 1000,
+          maxDelay: 10000
+        }
+      ).then(success => {
+          setTokens(success.access_token, success.refresh_token);
+          resolve();
+        }
+      );
     } else if (
       isAccessTokenExpired(access_token) &&
       isRefreshTokenExpired(refresh_token)) {
-      reject(Error.auth(true, "All tokens expired"));
+      console.log("All tokens expired");
+      authenticate({pathname: window.location.pathname});
     } else {
-      resolve(access_token);
+      resolve();
     }
   });
+};
+
+let createUrlFormEncoded = function (params) {
+  return Object.keys(params).map((key) => {
+    return encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
+  }).join('&');
+};
+export const refreshToken = (refresh_token) => {
+  let tokenRequest = createTokenRequest();
+
+  const params = {
+    grant_type: 'refresh_token',
+    refresh_token: refresh_token,
+  };
+  const searchParams = createUrlFormEncoded(params);
+
+  return tokenRequest.post('/uaa/oauth/token', searchParams)
+    .then(response => {
+      let token = response.data;
+      setTokens(token.access_token, token.refresh_token);
+    }).catch(error => {
+      console.log(error);
+    });
 };

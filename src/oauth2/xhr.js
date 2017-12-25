@@ -1,5 +1,5 @@
 import {TIMEOUT} from "./Oauth";
-import {getAccessToken} from "./TokenService";
+import {getAccessToken, validateAndUpdateTokenIfNecessary} from "./TokenService";
 import axios from "axios";
 
 export const securedGet = (url) => {
@@ -10,15 +10,17 @@ export const securedPost = (url, data) => {
 };
 
 const request = (url, config) => {
-  //TODO: validate and refresh token if expired
+  //TODO: use interceptors, create growls
   let request = axios.create({
     timeout: TIMEOUT,
     headers: {...config.headers, "Authorization": 'Bearer ' + getAccessToken()}
   });
-  return request(url, config)
-    .then(response => {
-      return response;
-    }).catch(error => {
-      console.debug("server.request.error", error);
-    });
+  return validateAndUpdateTokenIfNecessary().then(() => {
+    return request(url, config)
+      .then(response => {
+        return response;
+      }).catch(error => {
+        console.debug("server.request.error", error);
+      })
+  });
 };
