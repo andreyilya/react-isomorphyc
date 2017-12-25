@@ -119,8 +119,8 @@ export const validateAndUpdateTokenIfNecessary = () => {
           minDelay: 1000,
           maxDelay: 10000
         }
-      ).then(success => {
-          setTokens(success.access_token, success.refresh_token);
+      ).then((token) => {
+          setTokens(token.access_token, token.refresh_token);
           resolve();
         }
       );
@@ -151,8 +151,7 @@ export const refreshToken = (refresh_token) => {
 
   return tokenRequest.post('/uaa/oauth/token', searchParams)
     .then(response => {
-      let token = response.data;
-      setTokens(token.access_token, token.refresh_token);
+      return response.data;
     }).catch(error => {
       console.log(error);
     });

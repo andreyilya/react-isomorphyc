@@ -11,11 +11,12 @@ export const securedPost = (url, data) => {
 
 const request = (url, config) => {
   //TODO: use interceptors, create growls
-  let request = axios.create({
-    timeout: TIMEOUT,
-    headers: {...config.headers, "Authorization": 'Bearer ' + getAccessToken()}
-  });
+
   return validateAndUpdateTokenIfNecessary().then(() => {
+    let request = axios.create({
+      timeout: TIMEOUT,
+      headers: {...config.headers, "Authorization": 'Bearer ' + getAccessToken()}
+    });
     return request(url, config)
       .then(response => {
         return response;
