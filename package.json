@@ -55,8 +55,6 @@
     "babel-plugin-react-display-name": "2.0.0",
     "babel-plugin-transform-react-constant-elements": "6.23.0",
     "babel-plugin-transform-react-remove-prop-types": "0.4.12",
-    "babel-plugin-react-transform": "3.0.0",
-    "react-transform-hmr": "1.0.4",
     "babel-preset-latest": "6.16.0",
     "babel-preset-react": "6.16.0",
     "babel-preset-react-hmre": "1.1.1",
