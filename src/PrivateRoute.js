@@ -20,5 +20,5 @@ export const PrivateRoute = ({component: Component, ...rest}) => {
 };
 
 PrivateRoute.propTypes = {
-  component: PropTypes.object,
+  component: PropTypes.func,
 };
