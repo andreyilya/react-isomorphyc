@@ -6,13 +6,12 @@ import {
   OPEN_MODAL,
   SHOW_WAITING
 } from "../constants/actionTypes";
+import {securedGet} from "../oauth2/xhr";
 
 export const loadSupplier = (id) => {
   return function (dispatch) {
-    fetch(process.env.API_URL + '/get-supplier/' + id).then(response => {
-      return response.json();
-    }).then(res => {
-      dispatch({type: LOAD_SUPPLIER, data: res});
+    securedGet(process.env.API_URL + '/resource/get-supplier/' + id).then(response => {
+      dispatch({type: LOAD_SUPPLIER, data: response.data});
     }).catch(error => {
       return error;
     });
@@ -21,12 +20,9 @@ export const loadSupplier = (id) => {
 
 export const loadSuppliers = () => {
   return function (dispatch) {
-//TODO: create own http service
     dispatch({type: SHOW_WAITING, waitingId: "supplierLayer"});
-    fetch(process.env.API_URL + '/get-suppliers/').then(response => {
-      return response.json();
-    }).then(res => {
-      dispatch({type: LOAD_SUPPLIERS, suppliers: res});
+    securedGet(process.env.API_URL + '/resource/get-suppliers/').then(res => {
+      dispatch({type: LOAD_SUPPLIERS, suppliers: res.data});
       dispatch({type: HIDE_WAITING, waitingId: "supplierLayer"});
     }).catch(error => {
       dispatch({type: HIDE_WAITING, waitingId: "supplierLayer"});

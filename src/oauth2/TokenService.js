@@ -1,7 +1,6 @@
 import jwtDecode from "jwt-decode";
 import {CLIENT_ID, CLIENT_SECRET, TIMEOUT} from "./Oauth";
 import axios from "axios";
-import {securedGet} from "./xhr";
 
 const ACCESS_TOKEN = "access_token";
 const REFRESH_TOKEN = "refresh_token";
@@ -27,11 +26,6 @@ export const requestToken = (code, history) => {
   tokenRequest.post('/uaa/oauth/token', searchParams).then(response => {
     let token = response.data;
     setTokens(token.access_token, token.refresh_token);
-
-    //TODO: move
-    securedGet(process.env.API_URL + '/resource/').then(response => {
-      console.log(response.data);
-    });
     history.push(getTargetUrl());
 
   }).catch(error => {

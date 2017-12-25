@@ -4,7 +4,7 @@ import {WaitingLayer} from "./WaitingLayer";
 
 export const SupplierList = ({suppliers, showWaiting}) => {
   let supplierList;
-  if (suppliers.content) {
+  if (suppliers && suppliers.content) {
     supplierList = suppliers.content.map(function (item) {
       return (
         <tr key={item.id}>
