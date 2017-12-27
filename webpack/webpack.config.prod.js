@@ -5,7 +5,7 @@ import ExtractTextPlugin from "extract-text-webpack-plugin";
 import WebpackMd5Hash from "webpack-md5-hash";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import CompressionPlugin from "compression-webpack-plugin";
-import ManifestPlugin from 'webpack-manifest-plugin';//TODO: use https://github.com/webpack-contrib/copy-webpack-plugin
+import CopyWebpackPlugin from "copy-webpack-plugin"; //TODO: use https://github.com/webpack-contrib/copy-webpack-plugin
 import path from "path";
 
 const GLOBALS = {
@@ -78,7 +78,7 @@ export default {
       },
     }),
     new webpack.IgnorePlugin(/^\.\/locale$/, [/moment$/]),
-    new ManifestPlugin(),
+    new CopyWebpackPlugin([{from: './static/manifest.json', to: 'manifest.json'}]),
     new CompressionPlugin({
       asset: "[path].gz[query]",
       algorithm: "gzip",
