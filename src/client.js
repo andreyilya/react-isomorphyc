@@ -9,6 +9,7 @@ if (process.env.BROWSER) {
   require('bootstrap-sass/assets/stylesheets/_bootstrap.scss');
   require('./styles/styles.scss');
   require('../static/favicon.ico');
+  require('./service-worker-register.js');
 }
 
 const store = configureStore();

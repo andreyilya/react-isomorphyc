@@ -123,11 +123,17 @@ export const validateAndUpdateTokenIfNecessary = () => {
           maxDelay: 10000
         }
       ).then((token) => {
-          setTokens(token.access_token, token.refresh_token);
-          resolve();
+          if (token) {
+            setTokens(token.access_token, token.refresh_token);
+            resolve();
+          } else {
+            reject();
+          }
           //TODO: use reject
         }
-      );
+      ).catch(err => {
+        reject();
+      });
     } else if (
       isAccessTokenExpired(access_token) &&
       isRefreshTokenExpired(refresh_token)) {
