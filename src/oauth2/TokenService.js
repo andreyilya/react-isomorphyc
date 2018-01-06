@@ -129,7 +129,6 @@ export const validateAndUpdateTokenIfNecessary = () => {
           } else {
             reject();
           }
-          //TODO: use reject
         }
       ).catch(err => {
         reject();
