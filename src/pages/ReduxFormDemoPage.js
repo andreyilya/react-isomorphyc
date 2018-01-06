@@ -61,7 +61,7 @@ class ReduxFormDemoPage extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="container">
         <Button bsStyle="default" type="button"
                 onClick={() => this.props.openModal("supplierModal")}>Create
           new</Button>

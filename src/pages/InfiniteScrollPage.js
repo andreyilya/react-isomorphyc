@@ -5,7 +5,7 @@ import '../styles/infinite-scroll.scss';
 // Since this component is simple and static, there's no parent container for it.
 const InfiniteScrollPage = () => {
   return (
-    <div>
+    <div className="container">
       <h2 className="alt-header">Infinite scroll</h2>
       <p>
         This example app for demos. This page is for infinite scroll.

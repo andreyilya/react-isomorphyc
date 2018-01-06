@@ -1,43 +1,26 @@
 import React, {PropTypes} from "react";
-import {Link} from "react-router-dom";
 import {logout} from "../oauth2/TokenService";
+import {IndexLinkContainer, LinkContainer} from "react-router-bootstrap";
+import {Nav, Navbar, NavItem} from "react-bootstrap";
 
 const Header = ({path}) => (
-  <nav className={"navbar navbar-default"}>
-    <div className="container-fluid">
-      <div className="navbar-header">
-        <button type="button" className={"collapsed navbar-toggle"}
-                data-toggle="collapse"
-                data-target="#bs-example-navbar-collapse-1"
-                aria-expanded="false"><span className="sr-only">Toggle navigation</span>
-          <span className="icon-bar"/> <span className="icon-bar"/>
-          <span className="icon-bar"/></button>
-      </div>
-      <div className={"collapse navbar-collapse"}
-           id="bs-example-navbar-collapse-1">
-        <ul className={"nav navbar-nav"}>
-          <li className={path === "/" ? "active" : ""}><Link
-            to="/">Home</Link>
-          </li>
-          <li className={path === "/infinite-scroll" ? "active" : ""}><Link
-            to="/infinite-scroll">About</Link>
-          </li>
-          <li className={path.indexOf("/redux-form") >= 0 ? "active"
-            : ""}>
-            <Link to="/redux-form">Redux
-              form</Link>
-          </li>
-        </ul>
-        <ul className={"nav navbar-nav navbar-right"}>
-          <li>
-            <button style={{'marginTop': '10px'}} type="button" className={"btn btn-default btn-sm"} onClick={logout}>
-              <span className={"glyphicon glyphicon-log-out"}/> Log out
-            </button>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+  <Navbar>
+    <Navbar.Header className="container-fluid">
+      <Navbar.Toggle />
+    </Navbar.Header >
+    <Navbar.Collapse>
+      <Nav>
+        <IndexLinkContainer to="/"><NavItem>Home</NavItem></IndexLinkContainer>
+        <LinkContainer to="/infinite-scroll"><NavItem>Infinite scroll</NavItem></LinkContainer>
+        <LinkContainer to="/redux-form"><NavItem>Redux form</NavItem></LinkContainer>
+      </Nav>
+      <Nav pullRight>
+        <NavItem onClick={logout}>
+          <span className={"glyphicon glyphicon-log-out"}/> Log out
+        </NavItem >
+      </Nav>
+    </Navbar.Collapse>
+  </Navbar>
 );
 
 Header.propTypes = {

@@ -13,7 +13,7 @@ const Routes = () => (
       <Route exact path="/" component={HomePage}/>
       <PrivateRoute exact path="/redux-form" component={ReduxFormDemoPage}/>
       <PrivateRoute path="/redux-form/:id" component={ReduxFormDemoPage}/>
-      <PrivateRoute path="/infinite-scroll" component={InfiniteScrollPage}/>
+      <Route path="/infinite-scroll" component={InfiniteScrollPage}/>
       <Route path="/login" component={Oauth2Login}/>
       <Route path="*" component={NotFoundPage}/>
     </Switch>
