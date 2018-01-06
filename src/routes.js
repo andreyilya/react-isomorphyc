@@ -8,7 +8,7 @@ import Oauth2Login from "./pages/Oauth2Login";
 import {PrivateRoute} from "./PrivateRoute";
 
 const Routes = () => (
-  <routes>
+  <div>
     <Switch>
       <Route exact path="/" component={HomePage}/>
       <PrivateRoute exact path="/redux-form" component={ReduxFormDemoPage}/>
@@ -17,7 +17,7 @@ const Routes = () => (
       <Route path="/login" component={Oauth2Login}/>
       <Route path="*" component={NotFoundPage}/>
     </Switch>
-  </routes>
+  </div>
 
 );
 

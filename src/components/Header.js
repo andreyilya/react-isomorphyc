@@ -1,4 +1,5 @@
-import React, {PropTypes} from "react";
+import React from "react";
+import PropTypes from "prop-types";
 import {logout} from "../oauth2/TokenService";
 import {IndexLinkContainer, LinkContainer} from "react-router-bootstrap";
 import {Nav, Navbar, NavItem} from "react-bootstrap";

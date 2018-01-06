@@ -1,4 +1,5 @@
-import React, {PropTypes} from "react";
+import React from "react";
+import PropTypes from "prop-types";
 import FieldLevelValidationForm from "../components/FieldLevelValidationForm";
 import {connect} from "react-redux";
 import Modal from "react-bootstrap/lib/Modal";
