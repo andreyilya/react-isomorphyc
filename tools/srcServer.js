@@ -14,6 +14,7 @@ new WebpackDevServer(bundler, {
   contentBase: './static',
   hot: true,
   inline: true,
+  https: true,
   proxy: {
     '/api': {
       target: "http://localhost:9000",
