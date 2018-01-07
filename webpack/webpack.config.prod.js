@@ -78,7 +78,11 @@ export default {
       },
     }),
     new webpack.IgnorePlugin(/^\.\/locale$/, [/moment$/]),
-    new CopyWebpackPlugin([{from: './static/manifest.json', to: 'manifest.json'}]),
+    new CopyWebpackPlugin([
+      {from: './static/manifest.json', to: 'manifest.json'},
+      {from: './static/offline-page.html', to: 'offline-page.html'},
+      {from: './static/service-worker.js', to: 'service-worker.js'},
+      ]),
     new CompressionPlugin({
       asset: "[path].gz[query]",
       algorithm: "gzip",
