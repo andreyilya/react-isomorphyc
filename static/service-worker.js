@@ -2,6 +2,7 @@ const OFFLINE_URL = 'offline-page.html';
 
 self.addEventListener('install', function (event) {
   event.waitUntil(
+    //TODO: production mode
     caches.open('mysite-dynamic').then(function (cache) {
       return cache.addAll([
         '/',
