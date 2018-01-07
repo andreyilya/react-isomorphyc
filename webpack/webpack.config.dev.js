@@ -25,7 +25,7 @@ export default {
       'process.env.NODE_ENV': JSON.stringify('development'), // Tells React to build in either dev or prod modes. https://facebook.github.io/react/downloads.html (See bottom)
       'process.env.BROWSER': JSON.stringify('true'), // Tells React to build in either dev or prod modes. https://facebook.github.io/react/downloads.html (See bottom)
       'process.env.API_URL': JSON.stringify("/api"),
-      'process.env.LOGIN_URL': JSON.stringify("http://localhost:3000/login"),
+      'process.env.LOGIN_URL': JSON.stringify("https://localhost:3000/login"),
       'process.env.AUTH_SERVER_URL': JSON.stringify("http://localhost:9999"),
       __DEV__: true
     }),
