@@ -20,6 +20,7 @@ app.use(Express.static(path.resolve(__dirname, '..', 'dist')));
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '..', 'dist', 'index.html'));
 });
+//TODO: enable https
 //TODO: create proxy
 app.listen(port, function (error) {
   if (error) {
