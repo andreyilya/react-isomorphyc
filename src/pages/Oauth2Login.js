@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import queryString from "query-string";
 import {requestToken} from "../oauth2/TokenService";
 
-class Oauth2Login extends React.Component {
+class Oauth2Login extends React.PureComponent {
   static render() {
     return (
       <div/>
