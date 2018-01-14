@@ -1,0 +1,147 @@
+<!DOCTYPE html><html lang="en"><head><link rel="manifest" href="manifest.json"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="application-name" content="Test react app"><meta name="apple-mobile-web-app-title" content="Test react app"><meta name="msapplication-starturl" content="/"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#E16E03"><title>Fusion Starter</title><link href="blob:https://localhost:3000/9d1b21c5-7352-407b-a33f-6679b863ae2d" rel="stylesheet"></head><body><div id="app"></div><div id="messages"></div><button class="js-push-button" onclick="subscribe()">Subscrive</button><div id="message-content">Message content</div><script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js"></script><script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-messaging.js"></script><script>// Initialize Firebase
+var config = {
+  apiKey: "AIzaSyAxmz11DjcnHcMWkOHhzRxUGx4CR9cyNzg",
+  authDomain: "react-test-project-1a086.firebaseapp.com",
+  databaseURL: "https://react-test-project-1a086.firebaseio.com",
+  projectId: "react-test-project-1a086",
+  storageBucket: "",
+  messagingSenderId: "966501688821"
+};
+firebase.initializeApp(config);
+var  messaging = firebase.messaging();
+messaging.requestPermission()
+  .then(function() {
+    console.log('Notification permission granted.');
+    // TODO(developer): Retrieve an Instance ID token for use with FCM.
+    // ...
+  })
+  .catch(function(err) {
+    console.log('Unable to get permission to notify.', err);
+  });
+messaging.onMessage(function(payload) {
+  console.log("Message received. ", payload);
+  // [START_EXCLUDE]
+  // Update the UI to include the received message.
+  appendMessage(payload);
+  // [END_EXCLUDE]
+});
+// Add a message to the messages element.
+function appendMessage(payload) {
+  const messagesElement = document.querySelector('#messages');
+  const dataHeaderELement = document.createElement('h5');
+  const dataElement = document.createElement('pre');
+  dataElement.style = 'overflow-x:hidden;'
+  dataHeaderELement.textContent = 'Received message:';
+  dataElement.textContent = JSON.stringify(payload, null, 2);
+  messagesElement.appendChild(dataHeaderELement);
+  messagesElement.appendChild(dataElement);
+}
+
+
+
+
+
+title = 'Hello World';
+options = {
+  body: 'Hello this is a Hello world alert with web API',
+  tag: new Date().getTime(),
+  icon: 'https://banana.by/uploads/posts/2018-01/1515748685_01.jpg',
+  lang: 'en-US',
+  dir: 'ltr',
+//    actions: [
+//      {action: 'like', title: 'Like'},
+//      {action: 'reply', title: 'Reply'}]
+};
+var notification = new Notification( title , options );
+
+function sendNotification(notification) {
+  var key = 'AAAA4Qf9ZfU:APA91bHRg0dm5lSb7jNPFWnOrC2qU_T5uBfq2MfpphaFBREkrA1_AAJkx_kt3kJshZGcOcj-6ryQv1M2qj8BTwf0joYC9SO7wIZcHwA2-qCard_vZOD3DZXGvc8m3bHL7Mddptcb6TJ-';
+  console.log('Send notification', notification);
+
+  // hide last notification data
+  // info.hide();
+  // massage_row.hide();
+
+  messaging.getToken()
+    .then(function(currentToken) {
+      fetch('https://fcm.googleapis.com/fcm/send', {
+        'method': 'POST',
+        'headers': {
+          'Authorization': 'key=' + key,
+          'Content-Type': 'application/json'
+        },
+        'body': JSON.stringify({
+          'notification': notification,
+          'to': currentToken
+        })
+      }).then(function(response) {
+        return response.json();
+      }).then(function(json) {
+        console.log('Response', json);
+
+        if (json.success == 1) {
+          //  massage_row.show();
+          document.getElementById("message-content").innerHTML=json.results[0].message_id;
+        } else {
+          //  massage_row.hide();
+          //  massage_id.text(json.results[0].error);
+        }
+      }).catch(function(error) {
+        showError(error);
+      });
+    })
+    .catch(function(error) {
+      // showError('Error retrieving Instance ID token.', error);
+      console.log('Error retrieving Instance ID token.', error);
+    });
+}
+
+
+function subscribe() {
+  // Disable the button so it can't be changed while
+  // we process the permission request
+  var pushButton = document.querySelector('.js-push-button');
+  pushButton.disabled = true;
+
+  navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
+    serviceWorkerRegistration.pushManager.subscribe({userVisibleOnly: true})
+      .then(function(subscription) {
+        // The subscription was successful
+        isPushEnabled = true;
+        pushButton.textContent = 'Disable Push Messages';
+        pushButton.disabled = false;
+
+        // TODO: Send the subscription.endpoint to your server
+        // and save it to send a push message at a later date
+//          return sendSubscriptionToServer(subscription);
+        console.log(subscription);
+      })
+      .catch(function(e) {
+        if (Notification.permission === 'denied') {
+          // The user denied the notification permission which
+          // means we failed to subscribe and the user will need
+          // to manually change the notification permission to
+          // subscribe to push messages
+          console.warn('Permission for Notifications was denied');
+          pushButton.disabled = true;
+        } else {
+          // A problem occurred with the subscription; common reasons
+          // include network errors, and lacking gcm_sender_id and/or
+          // gcm_user_visible_only in the manifest.
+          console.error('Unable to subscribe to push.', e);
+          pushButton.disabled = false;
+          pushButton.textContent = 'Enable Push Messages';
+        }
+      });
+  });
+}
+function showError(error, error_data) {
+  if (typeof error_data !== "undefined") {
+    console.error(error + ' ', error_data);
+  } else {
+    console.error(error);
+  }
+
+  alert.show();
+  alert_message.html(error);
+}</script><noscript><div class="container"><h2>Please, enable javascript for this application</h2></div></noscript><script type="text/javascript" src="https://localhost:3000/bundle.js"></script></body></html>
