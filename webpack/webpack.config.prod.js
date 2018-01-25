@@ -82,6 +82,7 @@ export default {
       {from: './static/manifest.json', to: 'manifest.json'},
       {from: './static/offline-page.html', to: 'offline-page.html'},
       {from: './static/service-worker.js', to: 'service-worker.js'},
+      {from: './static/firebase-messaging-sw.js', to: 'firebase-messaging-sw.js'},
       ]),
     new CompressionPlugin({
       asset: "[path].gz[query]",

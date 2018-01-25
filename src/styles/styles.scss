@@ -2,6 +2,8 @@
 $vin-blue: #5bb7db;
 $vin-green: #60b044;
 $vin-red: #ff0000;
+$bell-from: 15deg;
+$bell-to: 45deg;
 
 /* Styles */
 body {
@@ -15,7 +17,6 @@ body {
   font-smoothing: antialiased;
   font-weight: 300;
 }
-
 
 h2 {
   color: $vin-blue;
@@ -46,5 +47,36 @@ h2 {
 
 .btn-toolbar {
   margin-left: -10px;
+}
+
+.bell {
+  margin-right: 5px;
+  position: relative;
+  transform: rotateZ($bell-to) !important;
+  animation: rotateBell 2s infinite;
+  top: 3px;
+  left: 3px;
+  transform-origin: top center;
+}
+
+@keyframes rotateBell {
+  0% {
+    transform: rotateZ($bell-to);
+  }
+  6% {
+    transform: rotateZ($bell-from);
+  }
+  12% {
+    transform: rotateZ($bell-to);
+  }
+  18% {
+    transform: rotateZ($bell-from);
+  }
+  24% {
+    transform: rotateZ($bell-to);
+  }
+  100% {
+    transform: rotateZ($bell-to);
+  }
 }
 
