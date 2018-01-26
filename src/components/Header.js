@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {logout} from "../oauth2/TokenService";
+import {getAccessToken, logout} from "../oauth2/TokenService";
 import {IndexLinkContainer, LinkContainer} from "react-router-bootstrap";
 import {Nav, Navbar, NavItem, Row} from "react-bootstrap";
 
@@ -18,9 +18,11 @@ const Header = ({path}) => (
           <LinkContainer to="/redux-form"><NavItem>Redux form</NavItem></LinkContainer>
         </Nav>
         <Nav pullRight>
-          <NavItem onClick={logout}>
-            <span className={"glyphicon glyphicon-log-out"}/> Log out
-          </NavItem >
+          {getAccessToken() !== null &&
+            <NavItem onClick={logout}>
+              <span className={"glyphicon glyphicon-log-out"}/> Log out
+            </NavItem>
+          }
         </Nav>
       </Navbar.Collapse>
     </Row>
