@@ -16,6 +16,7 @@ export const messaging = firebase.messaging();
 messaging.onMessage(function (payload) {
   //TODO: motification too
   appendMessage(payload);
+  new Notification(payload.notification.title, payload.notification);
 });
 // TODO: Add a message to the messages element. Just for test purposes. rewrite to react component
 function appendMessage(payload) {
