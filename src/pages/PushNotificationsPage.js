@@ -36,20 +36,18 @@ class PushNotificationsPage extends React.Component {
     return (
       <div className="container">
         <h2 className="alt-header">Push notifications</h2>
-        <div id="messages"/>
         <ButtonToolbar>
           <Button className="js-push-button" onClick={this.subscribeAction} bsStyle="default"
                   disabled={this.state.subscribed === true || this.state.subscribed === null}>
             {this.state.subscribed === false &&
-              <span className="glyphicon glyphicon-bell bell" aria-hidden="true"/>
+            <span className="glyphicon glyphicon-bell bell" aria-hidden="true"/>
             }
             {subscribeText}</Button>
           <Button onClick={sendNotification} bsStyle="primary" disabled={!this.state.subscribed}>Send
             notification</Button>
         </ButtonToolbar>
+        <div id="messages"/>
 
-        <div id="message-content">
-        </div>
       </div>
     );
   }
