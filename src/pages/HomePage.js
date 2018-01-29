@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 
 const HomePage = () => (
   <div className="container">
-    <h1>React Slingshot</h1>
+    <h1>React Sandbox</h1>
 
     <h2>Get Started</h2>
     <ol>
